@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# Mypy
+.mypy_cache/
+
+# Testing
+.deepeval/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data files (too large for git)
+02_data/raw/
+02_data/processed/
+*.csv
+*.parquet
+*.xlsx
+
+# Model outputs (large tensor files)
+03_code/04_results/vectors/*.pt
+04_results/vectors/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary/experimental files
+03_code/colab_paste_*.py
+03_code/experiments/
+
+# Keep these (add to git)
+# !03_code/modal_extract_vectors.py
+# !03_code/modal_validate_vectors.py
+# !research_plan.md
+# !README.md
+# !requirements.txt

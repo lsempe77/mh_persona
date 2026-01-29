@@ -1,0 +1,196 @@
+================================================================================
+RESEARCH PROJECT: Stabilizing AI Personas for Mental Health Chatbots
+================================================================================
+
+MOTIVATION
+----------
+Mental health chatbots face a unique challenge: they regularly interact with 
+emotionally vulnerable users—the exact scenario identified in "The Assistant 
+Axis" paper as a trigger for persona drift. When chatbots drift into bizarre 
+or harmful behaviors during mental health conversations, the consequences 
+can be severe.
+
+Key insight from the papers:
+- Emotionally vulnerable users trigger persona drift
+- Post-training only "loosely tethers" models to their persona
+- Activation-space interventions can stabilize behavior
+
+This creates an urgent need for mental health-specific persona stabilization.
+
+================================================================================
+
+RESEARCH QUESTIONS
+------------------
+1. How does persona drift manifest specifically in mental health conversations?
+   - What triggers drift in therapeutic contexts?
+   - Are certain mental health topics more prone to causing drift?
+
+2. Can we design a "Therapeutic Assistant Axis" optimized for mental health?
+   - What traits should the ideal mental health chatbot persona have?
+   - How do we balance empathy with appropriate boundaries?
+
+3. How can persona vectors help monitor and prevent harmful responses?
+   - Can we detect when a chatbot is about to give dangerous advice?
+   - Can we flag sycophantic validation of harmful thoughts?
+
+4. What steering interventions work best for mental health contexts?
+   - Real-time activation capping?
+   - Preventative steering during fine-tuning?
+
+================================================================================
+
+PROPOSED METHODOLOGY
+--------------------
+
+PHASE 1: Characterizing Mental Health Persona Space (Months 1-3)
+----------------------------------------------------------------
+1.1 Define target mental health chatbot traits:
+    - Empathetic but not sycophantic
+    - Supportive but maintains appropriate boundaries  
+    - Calm and grounded (resists emotional contagion)
+    - Safety-aware (recognizes crisis situations)
+    - Non-judgmental but honest
+
+1.2 Extract persona vectors for mental health-relevant traits:
+    - Sycophancy vs. honest feedback
+    - Emotional over-involvement vs. appropriate distance
+    - Crisis recognition sensitivity
+    - Harmful advice propensity
+    - Boundary maintenance
+
+1.3 Map the "Therapeutic Assistant Axis":
+    - Collect diverse therapeutic persona archetypes
+    - Extract principal components of therapeutic persona space
+    - Identify optimal region for mental health support
+
+PHASE 2: Studying Drift in Mental Health Contexts (Months 4-6)
+--------------------------------------------------------------
+2.1 Create dataset of challenging mental health conversations:
+    - Users expressing suicidal ideation
+    - Users seeking validation for harmful behaviors
+    - Users pushing boundaries / testing the bot
+    - Extended emotional conversations
+    - Meta-reflection prompts ("What do you really think?")
+
+2.2 Measure persona drift dynamics:
+    - Track activation movement along therapeutic persona vectors
+    - Identify drift patterns and thresholds
+    - Document failure modes specific to mental health
+
+2.3 Analyze real-world mental health chatbot incidents:
+    - Case studies of harmful chatbot responses
+    - Retrospective analysis using persona vector framework
+
+PHASE 3: Developing Stabilization Methods (Months 7-10)
+-------------------------------------------------------
+3.1 Activation capping for mental health:
+    - Define safe activation regions for therapeutic persona
+    - Test hard vs. soft boundaries
+    - Evaluate impact on empathy and helpfulness
+
+3.2 Preventative steering during fine-tuning:
+    - Apply persona vector constraints during training
+    - Compare with standard RLHF approaches
+    - Test on mental health-specific fine-tuning data
+
+3.3 Real-time monitoring system:
+    - Deploy persona vector monitors in inference pipeline
+    - Create alert thresholds for dangerous drift
+    - Design human-in-the-loop escalation protocols
+
+PHASE 4: Evaluation & Validation (Months 11-12)
+-----------------------------------------------
+4.1 Safety evaluations:
+    - Red-teaming with adversarial mental health prompts
+    - Jailbreak resistance testing
+    - Crisis response accuracy
+
+4.2 Therapeutic quality evaluations:
+    - Expert clinician assessments
+    - Validated mental health outcome measures
+    - User experience studies (with appropriate ethics approval)
+
+4.3 Trade-off analysis:
+    - Stability vs. flexibility
+    - Safety vs. perceived empathy
+    - Consistency vs. personalization
+
+================================================================================
+
+KEY HYPOTHESES
+--------------
+H1: Mental health conversations produce larger persona drift than general 
+    conversations due to emotional intensity.
+
+H2: A "Therapeutic Assistant Axis" can be identified that separates effective 
+    therapeutic personas from harmful ones.
+
+H3: Activation capping along the Therapeutic Axis will reduce harmful responses 
+    without significantly reducing perceived empathy.
+
+H4: Sycophancy vectors are particularly important to monitor in mental health 
+    contexts (e.g., validating self-harm ideation).
+
+H5: Fine-tuning with persona vector constraints will produce more stable mental 
+    health chatbots than standard RLHF.
+
+================================================================================
+
+EXPECTED OUTPUTS
+----------------
+1. Mental Health Persona Vector Library
+   - Open-source toolkit for extracting mental health-relevant persona vectors
+   - Pre-computed vectors for common models (Llama, GPT, Claude-like)
+
+2. Therapeutic Assistant Axis Benchmark
+   - Evaluation suite for mental health chatbot persona stability
+   - Red-teaming dataset for mental health contexts
+
+3. Stabilization Methods
+   - Activation capping implementation for inference
+   - Constrained fine-tuning pipeline
+   - Real-time monitoring dashboard
+
+4. Best Practices Guidelines
+   - Recommendations for deploying mental health chatbots
+   - Safety thresholds and monitoring protocols
+
+================================================================================
+
+ETHICAL CONSIDERATIONS
+----------------------
+- IRB approval required for any user studies
+- No real vulnerable populations in testing phases
+- Collaboration with mental health professionals essential
+- Clear disclaimers: AI is not a replacement for human therapists
+- Crisis escalation protocols must be robust
+
+================================================================================
+
+POTENTIAL COLLABORATORS
+-----------------------
+- Clinical psychologists / psychiatrists
+- Mental health chatbot companies (Woebot, Wysa, etc.)
+- AI safety researchers
+- Healthcare AI ethics experts
+
+================================================================================
+
+ROUGH TIMELINE
+--------------
+Months 1-3:   Phase 1 - Characterizing persona space
+Months 4-6:   Phase 2 - Studying drift dynamics  
+Months 7-10:  Phase 3 - Developing interventions
+Months 11-12: Phase 4 - Evaluation and paper writing
+
+================================================================================
+
+REFERENCES (Foundation Papers)
+------------------------------
+- Chen et al. (2025). Persona Vectors: Monitoring and Controlling Character 
+  Traits in Language Models. arXiv:2507.21509
+
+- Lu et al. (2026). The Assistant Axis: Situating and Stabilizing the Default 
+  Persona of Language Models. arXiv:2601.10387
+
+================================================================================
