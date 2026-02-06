@@ -152,6 +152,56 @@ Should verify: Does higher coefficient = more or less sycophantic behavior?
 
 ---
 
+## V19 POST-MORTEM (CRITICAL!)
+
+### What Went Wrong
+
+V19 used Cohen's d layer selection → **0/10 working traits** (down from 1/10)
+
+| Trait | Cohen's d Layer | d value | Result |
+|-------|-----------------|---------|--------|
+| empathetic_responsiveness | 27 | 17.54 | r=-0.046 ❌ |
+| non_judgmental_acceptance | 13 | 13.22 | r=-0.144 ❌ |
+
+But **V18 showed**:
+- **Layer 15**: empathetic_responsiveness r=**0.732** (best ever!)
+- Cohen's d for layer 15 was only 10.08
+
+### Key Insight
+
+**Cohen's d on training prompt separation DOES NOT predict steering effectiveness!**
+
+- Late layers (26-28) have HIGHEST Cohen's d
+- Late layers produce WORST steering results
+- Middle layers (14-15) have LOWER Cohen's d
+- Middle layers produce BEST steering results
+
+### Why This Happens
+
+Cohen's d measures how well the model separates high/low prompts in representation space. 
+But late layers are "committed" - the model has already decided what to output.
+Middle layers are where the model is still processing and can be influenced.
+
+---
+
+## RECOMMENDED APPROACH FOR V20
+
+**STOP USING COHEN'S D FOR LAYER SELECTION!**
+
+Use **FIXED layer 14** for all traits based on empirical results:
+- V17: layer 14 → r=0.466 for non_judgmental
+- V18: layer 15 → r=0.732 for empathetic (close to 14)
+
+```python
+# PROVEN TO WORK
+LAYER = 14                          # FIXED - don't use Cohen's d!
+extraction = "last-token"           # V9/V17 method
+coefficients = [-3, -1.5, 0, 1.5, 3]  # Moderate range
+scoring = "LLM-as-judge"            # GPT-4o-mini via OpenRouter
+```
+
+---
+
 ## CODE PATTERNS
 
 ### Correct Activation Extraction
@@ -184,12 +234,10 @@ def steering_hook(module, input, output):
     return hidden
 ```
 
-### Correct Layer Selection
+### FIXED Layer (NOT Cohen's d!)
 ```python
-for layer_idx in range(10, 29):  # Middle layers only
-    # Extract activations for all prompt pairs
-    # Compute Cohen's d = (mean_high - mean_low) / pooled_std
-    # Select layer with highest d
+STEERING_LAYER = 14  # Empirically proven best
+# DO NOT use layer selection based on Cohen's d
 ```
 
 ---
@@ -201,17 +249,18 @@ for layer_idx in range(10, 29):  # Middle layers only
 | `modal_steering_v9_llm_judge.py` | LLM judge + Cohen's d layers | ✅ Reference implementation |
 | `modal_steering_v17_v9_method.py` | V9 method, 6 traits | ✅ 1/6 working (r=0.466) |
 | `modal_steering_v18_optimized.py` | 10 traits, wider coeffs | ⚠️ 1/10 working but broke non_judgmental |
-| `modal_steering_v8_ai_safety.py` | Full layer search code | ✅ Layer search reference |
+| `modal_steering_v19_systematic.py` | Cohen's d layer selection | ❌ 0/10 working - layer selection failed |
 
 ---
 
 ## NEXT STEPS
 
-1. Create V19 with:
-   - Systematic layer search per trait (don't guess!)
+1. Create V20 with:
+   - **FIXED layer 14** (no Cohen's d selection!)
    - Fix sycophancy prompt polarity
    - Use proven coefficients [-3, -1.5, 0, 1.5, 3]
-   - Lock in working layers: empathetic@15, non_judgmental@14
+   - Last-token extraction
+   - LLM-as-judge scoring
 
 2. Run full 10-trait validation
 

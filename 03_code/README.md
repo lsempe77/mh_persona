@@ -1,61 +1,74 @@
-# Code Development Plan
+# 03_code - Scripts
 
-## Phase 1: Persona Vector Extraction (Months 1-3)
-
-### Setup
-```bash
-# Required packages (to be installed)
-pip install torch transformers accelerate
-pip install nnsight  # For activation access
-pip install datasets  # For loading ESConv, etc.
-```
-
-### Key Scripts to Develop
-
-1. `persona_vectors/extract_vectors.py`
-   - Implement automated persona vector extraction from Chen et al.
-   - Input: trait description (natural language)
-   - Output: direction vector in activation space
-
-2. `persona_vectors/therapeutic_traits.py`
-   - Define mental health-specific traits
-   - Generate contrastive prompts for each trait
-
-3. `utils/model_utils.py`
-   - Model loading helpers
-   - Activation extraction functions
-
-## Phase 2: Drift Measurement (Months 4-6)
-
-4. `experiments/measure_drift.py`
-   - Track activation trajectories during conversations
-   - Compute drift metrics
-
-5. `experiments/challenge_scenarios.py`
-   - Load/generate mental health challenge scenarios
-   - Run drift experiments
-
-## Phase 3: Interventions (Months 7-10)
-
-6. `persona_vectors/activation_capping.py`
-   - Implement inference-time activation capping
-   - Define safe regions
-
-7. `experiments/evaluate_interventions.py`
-   - Test safety improvements
-   - Measure quality trade-offs
+> **Last updated:** February 5, 2026
 
 ---
 
-## Models to Test
+## Active Scripts
 
-- [ ] Llama 3.1 8B Instruct
-- [ ] Llama 3.1 70B Instruct
-- [ ] Qwen 2.5 7B Instruct
-- [ ] Mistral 7B Instruct
+| Script | Purpose |
+|--------|---------|
+| `step0a_generate_scenarios.py` | Generate synthetic test scenarios |
+| `step0b_process_esconv.py` | Process ESConv real conversations |
+| `step1_validate_traits.py` | **MAIN:** Validate activation→behavior link |
 
-## Compute Requirements
+---
 
-- GPU: A100 40GB minimum for 7B models
-- Storage: ~50GB for model weights
-- Cloud budget: estimate needed
+## Commands
+
+```bash
+# Step 1: Validate traits (CURRENT)
+modal run step1_validate_traits.py --model llama3
+
+# Step 0: Data prep (already done)
+modal run step0a_generate_scenarios.py
+modal run step0b_process_esconv.py
+```
+
+---
+
+## Key Reference (archive/)
+
+| Script | What It Proved |
+|--------|----------------|
+| `archive/steering_iterations/modal_steering_v29_improved_traits.py` | 9/9 traits steerable (r=0.68-0.91) |
+
+---
+
+## Folder Structure
+
+```
+03_code/
+├── step0a_generate_scenarios.py  ← Data: synthetic
+├── step0b_process_esconv.py      ← Data: ESConv
+├── step1_validate_traits.py      ← MAIN
+├── README.md                     ← This file
+├── STEERING_LESSONS_LEARNED.md   ← Technical lessons
+├── archive/                      ← Old scripts
+│   └── steering_iterations/      ← V5-V29
+├── notebooks/                    ← Jupyter
+└── persona_vectors/              ← Vector storage
+```
+
+---
+
+## Models
+
+| Model | Status |
+|-------|--------|
+| Llama3-8B (NousResearch) | 🔄 Testing |
+| Qwen2-7B | ⏳ Pending |
+| Mistral-7B | ⏳ Pending |
+
+**Platform:** Modal.com with A10G GPU, 4-bit quantization
+
+---
+
+## Key Lessons
+
+1. **Layer selection:** Use r-value, NOT Cohen's d
+2. **Prompts:** Concrete behavioral, not abstract
+3. **Extraction:** Last-token, not mean pooling
+4. **Coefficients:** Moderate range [-3, +3]
+
+See `STEERING_LESSONS_LEARNED.md` for details.

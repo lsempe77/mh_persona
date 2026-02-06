@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Mental Health Chatbot Challenge Dataset",
+  "description": "Schema for scenarios designed to test persona drift in mental health AI chatbots",
+  "type": "object",
+  "required": ["version", "scenarios"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Dataset version"
+    },
+    "created_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/scenario"
+      }
+    }
+  },
+  "definitions": {
+    "scenario": {
+      "type": "object",
+      "required": ["id", "category", "subcategory", "difficulty", "conversation", "expected_drift_risks"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique scenario identifier",
+          "pattern": "^[A-Z]{3}-[0-9]{4}$"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "crisis",
+            "validation_seeking",
+            "boundary_testing",
+            "extended_emotional",
+            "meta_reflective",
+            "adversarial"
+          ],
+          "description": "Primary challenge category"
+        },
+        "subcategory": {
+          "type": "string",
+          "description": "Specific scenario type within category"
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "extreme"],
+          "description": "How challenging the scenario is for maintaining persona"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["synthetic", "adapted_esconv", "adapted_reddit", "real_incident", "expert_authored"],
+          "description": "Origin of the scenario"
+        },
+        "source_reference": {
+          "type": "string",
+          "description": "Citation or link to original source if adapted"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief description of what this scenario tests"
+        },
+        "conversation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/turn"
+          },
+          "minItems": 1,
+          "description": "The conversation turns"
+        },
+        "expected_drift_risks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/drift_risk"
+          },
+          "description": "Which persona traits are at risk of drifting"
+        },
+        "success_criteria": {
+          "type": "object",
+          "properties": {
+            "must_maintain": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Traits that must stay within bounds"
+            },
+            "must_avoid": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Specific behaviors to avoid"
+            },
+            "must_include": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Required elements in response (e.g., crisis resources)"
+            }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Additional categorization tags"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional context for researchers"
+        }
+      }
+    },
+    "turn": {
+      "type": "object",
+      "required": ["role", "content"],
+      "properties": {
+        "turn_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "assistant", "system"],
+          "description": "Who is speaking"
+        },
+        "content": {
+          "type": "string",
+          "description": "The message content"
+        },
+        "emotional_intensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Intensity of emotional content (0=neutral, 10=extreme)"
+        },
+        "pressure_tactics": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Any manipulation or pressure tactics used"
+        },
+        "expected_trait_challenge": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": ["increase", "decrease", "stable"]
+          },
+          "description": "Expected direction of pressure on each trait"
+        },
+        "annotations": {
+          "type": "object",
+          "properties": {
+            "crisis_indicators": {"type": "array", "items": {"type": "string"}},
+            "manipulation_flags": {"type": "array", "items": {"type": "string"}},
+            "clinical_notes": {"type": "string"}
+          }
+        }
+      }
+    },
+    "drift_risk": {
+      "type": "object",
+      "required": ["trait", "direction", "severity"],
+      "properties": {
+        "trait": {
+          "type": "string",
+          "enum": [
+            "empathetic_responsiveness",
+            "non_judgmental_acceptance",
+            "measured_pacing",
+            "boundary_maintenance",
+            "crisis_recognition",
+            "emotional_over_involvement",
+            "inappropriate_self_disclosure",
+            "abandonment_therapeutic_frame",
+            "uncritical_validation",
+            "harmful_advice_propensity"
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["too_high", "too_low"],
+          "description": "Direction of problematic drift"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["minor", "moderate", "major", "critical"],
+          "description": "Potential harm if drift occurs"
+        },
+        "mechanism": {
+          "type": "string",
+          "description": "How the scenario might cause this drift"
+        }
+      }
+    }
+  }
+}

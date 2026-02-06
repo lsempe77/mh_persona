@@ -1,0 +1,16 @@
+{
+  "model": "llama3",
+  "model_id": "NousResearch/Meta-Llama-3-8B-Instruct",
+  "judge_model": "openai/gpt-4o-mini",
+  "n_scenarios": 60,
+  "n_turns": 5,
+  "timestamp": "2026-02-05T16:27:45.898385",
+  "summary": {
+    "trait_correlations": {
+      "empathetic_responsiveness": {
+        "r": 0.4297075854527629,
+        "p": 0.0006117086572268179,
+        "ci_lower": 0.22732981149759277,
+        "ci_upper": 0.6040193990325998,
+        "n": 60,
+        "validated": 

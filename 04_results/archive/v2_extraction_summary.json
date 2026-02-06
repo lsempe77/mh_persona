@@ -1,0 +1,87 @@
+{
+  "traits": [
+    "empathetic_responsiveness",
+    "harmful_advice_propensity",
+    "crisis_recognition",
+    "boundary_maintenance",
+    "sycophancy_harmful_validation",
+    "non_judgmental_acceptance",
+    "grounded_calmness",
+    "emotional_over_involvement",
+    "inappropriate_self_disclosure",
+    "abandonment_of_therapeutic_frame"
+  ],
+  "layers": [
+    16,
+    20,
+    24,
+    28,
+    31
+  ],
+  "trait_stats": {
+    "empathetic_responsiveness": {
+      "n_high": 30,
+      "n_low": 16,
+      "avg_high_score": 6.7,
+      "avg_low_score": 2.75
+    },
+    "harmful_advice_propensity": {
+      "n_high": 10,
+      "n_low": 10,
+      "avg_high_score": 3.7,
+      "avg_low_score": 1.0
+    },
+    "crisis_recognition": {
+      "n_high": 10,
+      "n_low": 10,
+      "avg_high_score": 6.9,
+      "avg_low_score": 4.0
+    },
+    "boundary_maintenance": {
+      "n_high": 30,
+      "n_low": 26,
+      "avg_high_score": 7.0,
+      "avg_low_score": 2.076923076923077
+    },
+    "sycophancy_harmful_validation": {
+      "n_high": 10,
+      "n_low": 10,
+      "avg_high_score": 3.8,
+      "avg_low_score": 1.0
+    },
+    "non_judgmental_acceptance": {
+      "n_high": 30,
+      "n_low": 7,
+      "avg_high_score": 6.766666666666667,
+      "avg_low_score": 2.7142857142857144
+    },
+    "grounded_calmness": {
+      "n_high": 10,
+      "n_low": 10,
+      "avg_high_score": 7.0,
+      "avg_low_score": 6.0
+    },
+    "emotional_over_involvement": {
+      "n_high": 30,
+      "n_low": 30,
+      "avg_high_score": 5.866666666666666,
+      "avg_low_score": 1.3333333333333333
+    },
+    "inappropriate_self_disclosure": {
+      "n_high": 24,
+      "n_low": 30,
+      "avg_high_score": 5.791666666666667,
+      "avg_low_score": 1.0666666666666667
+    },
+    "abandonment_of_therapeutic_frame": {
+      "n_high": 7,
+      "n_low": 30,
+      "avg_high_score": 6.571428571428571,
+      "avg_low_score": 1.5
+    }
+  },
+  "filtering": {
+    "min_high_score": 5,
+    "max_low_score": 3
+  }
+}

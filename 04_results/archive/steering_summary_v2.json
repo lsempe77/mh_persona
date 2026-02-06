@@ -1,0 +1,147 @@
+{
+  "best_configs": {
+    "abandonment_of_therapeutic_frame": {
+      "layer": 20,
+      "position": "response",
+      "correlation": 0.18578772125959764,
+      "effect_size": 0.06025390624999999,
+      "mean_at_neg": -0.32587890625,
+      "mean_at_zero": -0.173779296875,
+      "mean_at_pos": -0.265625
+    },
+    "boundary_maintenance": {
+      "layer": 31,
+      "position": "response",
+      "correlation": 0.2202494238485903,
+      "effect_size": 0.343359375,
+      "mean_at_neg": 0.14453125,
+      "mean_at_zero": -0.2095703125,
+      "mean_at_pos": 0.487890625
+    },
+    "crisis_recognition": {
+      "layer": 20,
+      "position": "response",
+      "correlation": 0.18576916253398362,
+      "effect_size": 0.39277343750000004,
+      "mean_at_neg": 0.2728515625,
+      "mean_at_zero": 0.589453125,
+      "mean_at_pos": 0.665625
+    },
+    "emotional_over_involvement": {
+      "layer": 20,
+      "position": "response",
+      "correlation": 0.20800925785870836,
+      "effect_size": 0.25595703125,
+      "mean_at_neg": -0.07666015625,
+      "mean_at_zero": -0.135223388671875,
+      "mean_at_pos": 0.179296875
+    },
+    "empathetic_responsiveness": {
+      "layer": 20,
+      "position": "all",
+      "correlation": 0.21205012027124448,
+      "effect_size": 0.254296875,
+      "mean_at_neg": -0.350390625,
+      "mean_at_zero": -0.2738525390625,
+      "mean_at_pos": -0.09609375
+    },
+    "grounded_calmness": {
+      "layer": 20,
+      "position": "all",
+      "correlation": 0.03815092028973098,
+      "effect_size": -0.178466796875,
+      "mean_at_neg": 0.076318359375,
+      "mean_at_zero": -0.016015625,
+      "mean_at_pos": -0.1021484375
+    },
+    "harmful_advice_propensity": {
+      "layer": 31,
+      "position": "all",
+      "correlation": 0.16199976406718655,
+      "effect_size": 1.21181640625,
+      "mean_at_neg": -1.06025390625,
+      "mean_at_zero": -0.49072265625,
+      "mean_at_pos": 0.1515625
+    },
+    "inappropriate_self_disclosure": {
+      "layer": 31,
+      "position": "response",
+      "correlation": 0.10262878756394501,
+      "effect_size": 0.32792968749999996,
+      "mean_at_neg": -1.0220703125,
+      "mean_at_zero": -0.03671875,
+      "mean_at_pos": -0.694140625
+    },
+    "non_judgmental_acceptance": {
+      "layer": 20,
+      "position": "response",
+      "correlation": 0.2090325812199643,
+      "effect_size": 0.28447265625,
+      "mean_at_neg": -0.05,
+      "mean_at_zero": -0.080126953125,
+      "mean_at_pos": 0.23447265625
+    },
+    "sycophancy_harmful_validation": {
+      "layer": 20,
+      "position": "all",
+      "correlation": -0.019622175087970886,
+      "effect_size": -0.012988281250000011,
+      "mean_at_neg": -0.43115234375,
+      "mean_at_zero": -0.529296875,
+      "mean_at_pos": -0.444140625
+    }
+  },
+  "layer_summary": {
+    "20": {
+      "avg_corr": 0.05216694570732474,
+      "n_working": 2,
+      "n_total": 10
+    },
+    "31": {
+      "avg_corr": -0.006839119420759569,
+      "n_working": 1,
+      "n_total": 10
+    }
+  },
+  "position_summary": {
+    "response": {
+      "avg_corr": -0.021319100089342687,
+      "n_working": 1,
+      "n_total": 10
+    },
+    "all": {
+      "avg_corr": 0.03366645585845275,
+      "n_working": 1,
+      "n_total": 10
+    }
+  },
+  "all_traits": [
+    "abandonment_of_therapeutic_frame",
+    "boundary_maintenance",
+    "crisis_recognition",
+    "emotional_over_involvement",
+    "empathetic_responsiveness",
+    "grounded_calmness",
+    "harmful_advice_propensity",
+    "inappropriate_self_disclosure",
+    "non_judgmental_acceptance",
+    "sycophancy_harmful_validation"
+  ],
+  "focused_layers": [
+    20,
+    31
+  ],
+  "focused_coeffs": [
+    -3.0,
+    -1.5,
+    0.0,
+    1.5,
+    3.0
+  ],
+  "test_positions": [
+    "response",
+    "all"
+  ],
+  "n_prompts": 5,
+  "model": "mistralai/Mistral-7B-Instruct-v0.2"
+}

@@ -1,0 +1,83 @@
+{
+  "llama3": {
+    "model": "llama3",
+    "n_scenarios": 60,
+    "n_traits": 9,
+    "trait_correlations": {
+      "empathetic_responsiveness": {
+        "r": 0.4297,
+        "p": 0.0006,
+        "ci_lower": 0.2284,
+        "ci_upper": 0.617,
+        "validated": true,
+        "n": 60
+      },
+      "non_judgmental_acceptance": {
+        "r": 0.0646,
+        "p": 0.6238,
+        "ci_lower": -0.272,
+        "ci_upper": 0.3967,
+        "validated": false,
+        "n": 60
+      },
+      "measured_pacing": {
+        "r": 0.0951,
+        "p": 0.4698,
+        "ci_lower": -0.1518,
+        "ci_upper": 0.347,
+        "validated": false,
+        "n": 60
+      },
+      "boundary_maintenance": {
+        "r": 0.1044,
+        "p": 0.4273,
+        "ci_lower": -0.133,
+        "ci_upper": 0.3248,
+        "validated": false,
+        "n": 60
+      },
+      "crisis_recognition": {
+        "r": -0.0266,
+        "p": 0.8401,
+        "ci_lower": -0.2884,
+        "ci_upper": 0.2257,
+        "validated": false,
+        "n": 60
+      },
+      "emotional_over_involvement": {
+        "r": 0.0861,
+        "p": 0.5131,
+        "ci_lower": -0.1291,
+        "ci_upper": 0.304,
+        "validated": false,
+        "n": 60
+      },
+      "inappropriate_self_disclosure": {
+        "r": -0.133,
+        "p": 0.3112,
+        "ci_lower": -0.329,
+        "ci_upper": 0.0827,
+        "validated": false,
+        "n": 60
+      },
+      "abandonment_therapeutic_frame": {
+        "r": 0.0261,
+        "p": 0.8431,
+        "ci_lower": -0.1975,
+        "ci_upper": 0.2381,
+        "validated": false,
+        "n": 60
+      },
+      "uncritical_validation": {
+        "r": 0.2015,
+        "p": 0.1226,
+        "ci_lower": -0.0527,
+        "ci_upper": 0.4268,
+        "validated": false,
+        "n": 60
+      }
+    },
+    "validated_count": 1,
+    "success": false
+  }
+}

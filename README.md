@@ -1,67 +1,56 @@
 # Stabilizing AI Personas for Mental Health Chatbots
 
-> Applying Persona Vector Methods to Improve Safety and Effectiveness of Mental Health AI Assistants
+> Real-time persona drift detection using activation steering
 
-## Project Overview
-
-This research applies inference-time persona vector monitoring and activation steering to mental health chatbots, complementing existing training-time Constitutional AI approaches.
-
-**Key Research Questions:**
-1. How does persona drift manifest in mental health chatbot conversations?
-2. Can we create a "Therapeutic Assistant Axis" optimized for mental health?
-3. How effective are activation-space interventions for preventing harmful responses?
-
-## Folder Structure
-
-```
-AI_persona/
-│
-├── README.md                    # This file
-├── research_plan.md             # Detailed research plan
-│
-├── 01_literature/               # Literature review materials
-│   ├── foundation_papers/       # Core mechanistic interpretability papers
-│   │   ├── 2507.21509v3.pdf    # Persona Vectors (Chen et al. 2025)
-│   │   └── 2601.10387v1.pdf    # Assistant Axis (Lu et al. 2026)
-│   ├── mental_health_ai/        # Mental health chatbot papers
-│   └── notes/                   # Reading notes and summaries
-│       ├── papers_summary.md    # Summary of foundation papers
-│       └── initial_ideas.txt    # Initial brainstorming
-│
-├── 02_data/                     # Data storage
-│   ├── raw/                     # Raw datasets (ESConv, etc.)
-│   └── processed/               # Processed/cleaned data
-│
-├── 03_code/                     # Source code
-│   ├── persona_vectors/         # Persona vector extraction
-│   ├── experiments/             # Experiment scripts
-│   └── utils/                   # Utility functions
-│
-├── 04_results/                  # Experimental results
-│   ├── figures/                 # Generated figures
-│   └── tables/                  # Result tables
-│
-└── 05_outputs/                  # Final outputs
-    ├── paper/                   # Manuscript drafts
-    └── presentations/           # Slides and posters
-```
-
-## Quick Links
-
-- [Research Plan](research_plan.md) — Full methodology and timeline
-- [Literature Notes](01_literature/notes/papers_summary.md) — Paper summaries
-
-## Key References
-
-1. Chen et al. (2025). *Persona Vectors*. arXiv:2507.21509
-2. Lu et al. (2026). *The Assistant Axis*. arXiv:2601.10387
-3. Lyu & Song (2025). *Domain-Specific Constitutional AI*. arXiv:2509.16444
-
-## Status
-
-📅 **Project Start:** TBD  
-📊 **Current Phase:** Planning & Literature Review
+**Status:** Phase 1 Complete ✅ | Phase 2 Next  
+**Last Updated:** February 6, 2026
 
 ---
 
-*Last updated: January 28, 2026*
+## 🎯 Project Goal
+
+Build a **real-time monitoring system** that detects when a mental health chatbot drifts into harmful behavior — **before** it happens.
+
+**Foundation:** Chen et al. 2025 "Persona Vectors" ([arXiv:2507.21509](https://arxiv.org/abs/2507.21509))
+
+---
+
+## 📊 Current Status
+
+**Phase 1 COMPLETE:** 7/8 traits validated on Llama3-8B (r > 0.3)
+
+| Trait | r-value | Status |
+|-------|---------|--------|
+| sycophancy_harmful_validation | 0.471 | ✅ |
+| abandonment_of_therapeutic_frame | 0.451 | ✅ |
+| empathetic_responsiveness | 0.431 | ✅ |
+| emotional_over_involvement | 0.425 | ✅ |
+| crisis_recognition | 0.382 | ✅ |
+| non_judgmental_acceptance | 0.368 | ✅ |
+| uncritical_validation | 0.367 | ✅ |
+| boundary_maintenance | 0.289 | ⚠️ weak |
+
+**Next:** Phase 2 Cross-Model Validation (Qwen2, Mistral)
+
+---
+
+## 📁 Key Files
+
+| File | Purpose |
+|------|---------|
+| [PROJECT_STATUS.md](PROJECT_STATUS.md) | **MASTER STATUS** — full details |
+| [.github/copilot-instructions.md](.github/copilot-instructions.md) | Technical lessons |
+| `03_code/step1_validate_traits.py` | Main validation script |
+
+---
+
+## 🚀 Next Command
+
+```bash
+cd 03_code
+modal run step1_validate_traits.py --model qwen2 --force
+```
+
+---
+
+*Last updated: February 6, 2026*

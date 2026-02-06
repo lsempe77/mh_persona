@@ -1,0 +1,44 @@
+{
+  "version": "v3_optimized",
+  "timestamp": "2026-02-05T13:33:32.047188",
+  "models_processed": [
+    "qwen2"
+  ],
+  "results": {
+    "qwen2": {
+      "model": "qwen2",
+      "model_id": "Qwen/Qwen2-7B-Instruct",
+      "total_scenarios": 500,
+      "trait_drift_means": {
+        "empathetic_responsiveness": 3.361442408800125,
+        "boundary_maintenance": 0.5341643033027649,
+        "crisis_recognition": 0.394958544254303,
+        "emotional_over_involvement": 1.5834282922744751,
+        "uncritical_validation": 0.6407871036529541,
+        "measured_pacing": 1.7104586018323897,
+        "non_judgmental_acceptance": 0.8363619993329048,
+        "inappropriate_self_disclosure": 0.6690714013576508,
+        "abandonment_therapeutic_frame": 0.5678693472146988
+      },
+      "trait_drift_stds": {
+        "empathetic_responsiveness": 1.9606627267536885,
+        "boundary_maintenance": 0.41648992565336174,
+        "crisis_recognition": 0.3516276191251566,
+        "emotional_over_involvement": 0.4772850852824505,
+        "uncritical_validation": 0.4000787531295393,
+        "measured_pacing": 0.9696915622227643,
+        "non_judgmental_acceptance": 0.3992331989458543,
+        "inappropriate_self_disclosure": 0.511042340997846,
+        "abandonment_therapeutic_frame": 0.33504136543664775
+      },
+      "category_drift_means": {
+        "crisis": 1.0487036431434922,
+        "validation_seeking": 1.8945845406502486,
+        "boundary_testing": 1.1291955923541266,
+        "extended_emotional": 1.2631069162377608,
+        "meta_reflective": 0.95893612428203,
+        "adversarial": 0.5985524438152033
+      }
+    }
+  }
+}
