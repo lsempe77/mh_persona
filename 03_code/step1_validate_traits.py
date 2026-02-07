@@ -43,11 +43,11 @@ MODELS = {
 }
 
 # ============================================================================
-# ALL 9 TRAIT DEFINITIONS — FROM V29 (9/9 steerable, r=0.68-0.91)
-# Following copilot-instructions.md: Concrete, behavioral, extreme contrasts
+# TRAIT DEFINITIONS - Model-specific loading (Phase 2b, Feb 2026)
 # ============================================================================
 
-TRAIT_DEFINITIONS = {
+# Default definitions (optimized for Llama3)
+TRAIT_DEFINITIONS_DEFAULT = {
     "empathetic_responsiveness": {
         "description": "Demonstrating warmth, care, and emotional attunement",
         "high_prompts": [
@@ -219,6 +219,84 @@ TRAIT_DEFINITIONS = {
         "judge_low": "Introduces alternative viewpoints, gently challenges assumptions",
     },
 }
+
+# Active trait definitions (set by load_trait_definitions based on model)
+TRAIT_DEFINITIONS = TRAIT_DEFINITIONS_DEFAULT.copy()
+
+
+def load_trait_definitions(model_key: str, volume_path: str = None) -> dict:
+    """
+    Load model-specific trait definitions if available, otherwise use defaults.
+    
+    Phase 2b (Feb 2026): Model-specific prompts to improve cross-model validation.
+    - Qwen2: Tighter clustering, swapped polarity for non_judgmental_acceptance
+    - Mistral: Shorter, more direct prompts for higher consistency
+    
+    Checks in order:
+    1. Modal volume path (/results/trait_definitions_{model}.json)
+    2. Local script directory (for local development)
+    3. Falls back to default definitions
+    """
+    global TRAIT_DEFINITIONS
+    
+    # For llama3, always use defaults (they were optimized for it)
+    if model_key == "llama3":
+        print(f"► Using default trait definitions (optimized for Llama3)")
+        TRAIT_DEFINITIONS = TRAIT_DEFINITIONS_DEFAULT.copy()
+        return TRAIT_DEFINITIONS
+    
+    # Check Modal volume path first (when running on Modal)
+    if volume_path:
+        vol_defs_path = f"{volume_path}/trait_definitions_{model_key}.json"
+        if os.path.exists(vol_defs_path):
+            print(f"► Loading model-specific trait definitions from volume: {vol_defs_path}")
+            with open(vol_defs_path, encoding='utf-8') as f:
+                model_defs = json.load(f)
+            TRAIT_DEFINITIONS = {k: v for k, v in model_defs.items() if not k.startswith('_')}
+            print(f"  ✓ Loaded {len(TRAIT_DEFINITIONS)} traits for {model_key}")
+            return TRAIT_DEFINITIONS
+    
+    # Check local script directory (for local development / Modal local_entrypoint)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    local_defs_path = os.path.join(script_dir, f"trait_definitions_{model_key}.json")
+    
+    if os.path.exists(local_defs_path):
+        print(f"► Loading model-specific trait definitions: {local_defs_path}")
+        with open(local_defs_path, encoding='utf-8') as f:
+            model_defs = json.load(f)
+        
+        # Filter out metadata keys (starting with _)
+        TRAIT_DEFINITIONS = {k: v for k, v in model_defs.items() if not k.startswith('_')}
+        
+        # Validate structure
+        for trait, info in TRAIT_DEFINITIONS.items():
+            if not all(k in info for k in ['high_prompts', 'low_prompts', 'judge_high', 'judge_low']):
+                print(f"  ⚠ Warning: {trait} missing required keys, using default")
+                TRAIT_DEFINITIONS[trait] = TRAIT_DEFINITIONS_DEFAULT.get(trait, info)
+        
+        print(f"  ✓ Loaded {len(TRAIT_DEFINITIONS)} traits for {model_key}")
+        return TRAIT_DEFINITIONS
+    else:
+        print(f"► Using default trait definitions (no {model_key}-specific file found)")
+        TRAIT_DEFINITIONS = TRAIT_DEFINITIONS_DEFAULT.copy()
+        return TRAIT_DEFINITIONS
+
+
+def upload_trait_definitions_to_volume(vol, model_key: str):
+    """Upload local trait definitions JSON to Modal volume for remote access."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    local_path = os.path.join(script_dir, f"trait_definitions_{model_key}.json")
+    vol_path = f"/results/trait_definitions_{model_key}.json"
+    
+    if os.path.exists(local_path):
+        with open(local_path, encoding='utf-8') as f:
+            content = f.read()
+        with open(vol_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        vol.commit()
+        print(f"✓ Uploaded {local_path} to volume")
+        return True
+    return False
 
 
 # ============================================================================
@@ -609,6 +687,10 @@ def validate_all_traits(model_key: str, force_rerun: bool = False):
     model_config = MODELS[model_key]
     model_id = model_config["id"]
     
+    # Load model-specific trait definitions (Phase 2b)
+    vol.reload()
+    load_trait_definitions(model_key, volume_path="/results")
+    
     print(f"\n{'='*70}")
     print(f"PHASE 1: PARALLEL VALIDATION - {model_key.upper()}")
     print(f"{'='*70}")
@@ -906,6 +988,29 @@ def validate_all_traits(model_key: str, force_rerun: bool = False):
 
 @app.local_entrypoint()
 def main(model: str = "llama3", force: bool = False):
+    """
+    Main entry point for trait validation.
+    
+    Usage:
+        modal run step1_validate_traits.py --model llama3
+        modal run step1_validate_traits.py --model qwen2 --force
+        modal run step1_validate_traits.py --model mistral --force
+    """
+    # Upload model-specific trait definitions to volume if they exist locally
+    if model in ["qwen2", "mistral"]:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        local_path = os.path.join(script_dir, f"trait_definitions_{model}.json")
+        
+        if os.path.exists(local_path):
+            print(f"► Uploading trait definitions for {model} to Modal volume...")
+            # Upload via Modal volume
+            with vol.batch_upload() as batch:
+                batch.put_file(local_path, f"trait_definitions_{model}.json")
+            print(f"  ✓ Uploaded {local_path}")
+        else:
+            print(f"⚠ No model-specific trait definitions found at {local_path}")
+            print(f"  Using default (Llama3-optimized) definitions")
+    
     result = validate_all_traits.remote(model, force)
     
     print("\n" + "="*70)
