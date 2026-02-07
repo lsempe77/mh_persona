@@ -512,9 +512,11 @@ def extract_steering_vectors(model_key: str):
     
     print(f"\n► Extracting steering vectors for {len(TRAIT_DEFINITIONS)} traits...")
     steering_vectors = {}
+    vector_diagnostics = {}  # NEW: Capture detailed diagnostics
     
     for trait, prompts in TRAIT_DEFINITIONS.items():
         steering_vectors[trait] = {}
+        vector_diagnostics[trait] = {}
         
         for layer in LAYERS_TO_TEST:
             high_acts = []
@@ -534,10 +536,33 @@ def extract_steering_vectors(model_key: str):
                 hidden = outputs.hidden_states[layer][:, -1, :].float()
                 low_acts.append(hidden.squeeze(0).cpu())
             
-            high_mean = torch.stack(high_acts).mean(dim=0)
-            low_mean = torch.stack(low_acts).mean(dim=0)
+            high_stack = torch.stack(high_acts)
+            low_stack = torch.stack(low_acts)
+            high_mean = high_stack.mean(dim=0)
+            low_mean = low_stack.mean(dim=0)
             direction = high_mean - low_mean
+            raw_norm = direction.norm().item()
             direction = direction / (direction.norm() + 1e-8)
+            
+            # NEW: Compute diagnostic statistics
+            high_var = high_stack.var(dim=0).mean().item()  # Within-class variance
+            low_var = low_stack.var(dim=0).mean().item()
+            separation = (high_mean - low_mean).norm().item()  # Class separation
+            
+            # Cosine similarities between individual prompts and mean
+            high_cos_sims = [torch.nn.functional.cosine_similarity(h.unsqueeze(0), high_mean.unsqueeze(0)).item() for h in high_acts]
+            low_cos_sims = [torch.nn.functional.cosine_similarity(l.unsqueeze(0), low_mean.unsqueeze(0)).item() for l in low_acts]
+            
+            vector_diagnostics[trait][str(layer)] = {
+                "raw_norm": float(raw_norm),
+                "separation": float(separation),
+                "high_within_var": float(high_var),
+                "low_within_var": float(low_var),
+                "high_cos_sims": high_cos_sims,  # Consistency of high prompts
+                "low_cos_sims": low_cos_sims,    # Consistency of low prompts
+                "high_mean_cos": float(np.mean(high_cos_sims)),
+                "low_mean_cos": float(np.mean(low_cos_sims)),
+            }
             
             # Convert to list for serialization
             steering_vectors[trait][str(layer)] = direction.tolist()
@@ -549,8 +574,15 @@ def extract_steering_vectors(model_key: str):
     vectors_path = f"/results/steering_vectors_{model_key}.pkl"
     with open(vectors_path, "wb") as f:
         pickle.dump(steering_vectors, f)
+    
+    # NEW: Save vector diagnostics separately as JSON
+    diag_path = f"/results/vector_diagnostics_{model_key}.json"
+    with open(diag_path, "w") as f:
+        json.dump(vector_diagnostics, f, indent=2)
+    
     vol.commit()
     print(f"✓ Steering vectors saved to {vectors_path}")
+    print(f"✓ Vector diagnostics saved to {diag_path}")
     
     return vectors_path  # Return path, not the data
 
@@ -701,6 +733,10 @@ def validate_all_traits(model_key: str, force_rerun: bool = False):
         
         behavioral_drifts = [s["trait_data"][trait]["behavioral_drift"] for s in scenario_data]
         
+        # NEW: Get raw scores for distribution analysis
+        scores_t1 = [s["trait_data"][trait]["score_t1"] for s in scenario_data]
+        scores_tN = [s["trait_data"][trait]["score_tN"] for s in scenario_data]
+        
         # Check variance
         beh_std = np.std(behavioral_drifts)
         print(f"    Behavioral drift σ = {beh_std:.3f}")
@@ -715,34 +751,77 @@ def validate_all_traits(model_key: str, force_rerun: bool = False):
             ]
             
             act_std = np.std(activation_drifts)
+            act_mean = np.mean(activation_drifts)
+            act_q25, act_median, act_q75 = np.percentile(activation_drifts, [25, 50, 75])
             
             try:
                 r, p = stats.pearsonr(activation_drifts, behavioral_drifts)
+                
+                # NEW: Bootstrap confidence interval for r
+                n_boot = 1000
+                boot_rs = []
+                n = len(activation_drifts)
+                for _ in range(n_boot):
+                    idx = np.random.choice(n, n, replace=True)
+                    try:
+                        boot_r, _ = stats.pearsonr(
+                            [activation_drifts[i] for i in idx],
+                            [behavioral_drifts[i] for i in idx]
+                        )
+                        boot_rs.append(boot_r)
+                    except:
+                        pass
+                
+                ci_low, ci_high = np.percentile(boot_rs, [2.5, 97.5]) if boot_rs else (0, 0)
+                
                 layer_results[layer] = {
                     "r": float(r),
                     "p": float(p),
+                    "r_ci_low": float(ci_low),
+                    "r_ci_high": float(ci_high),
                     "activation_std": float(act_std),
+                    "activation_mean": float(act_mean),
+                    "activation_q25": float(act_q25),
+                    "activation_median": float(act_median),
+                    "activation_q75": float(act_q75),
                 }
             except:
-                layer_results[layer] = {"r": 0.0, "p": 1.0, "activation_std": 0.0}
+                layer_results[layer] = {
+                    "r": 0.0, "p": 1.0, "activation_std": 0.0,
+                    "r_ci_low": 0.0, "r_ci_high": 0.0,
+                    "activation_mean": 0.0, "activation_q25": 0.0, 
+                    "activation_median": 0.0, "activation_q75": 0.0,
+                }
         
         # Find best layer
         best_layer = max(layer_results.keys(), key=lambda l: layer_results[l]["r"])
         best_r = layer_results[best_layer]["r"]
         best_p = layer_results[best_layer]["p"]
+        best_ci_low = layer_results[best_layer]["r_ci_low"]
+        best_ci_high = layer_results[best_layer]["r_ci_high"]
         
         validated = best_r > 0.3 and best_p < 0.05
         status = "✓ VALIDATED" if validated else "⚠ WEAK" if best_r > 0.15 else "✗ FAILED"
         
-        print(f"    → Best: Layer {best_layer} (r={best_r:.3f}, p={best_p:.4f}) {status}")
+        print(f"    → Best: Layer {best_layer} (r={best_r:.3f} [{best_ci_low:.3f}, {best_ci_high:.3f}], p={best_p:.4f}) {status}")
+        
+        # NEW: Count negative r layers (polarity check)
+        neg_r_layers = [l for l, v in layer_results.items() if v["r"] < -0.1]
         
         results["traits"][trait] = {
             "best_layer": best_layer,
             "best_r": round(best_r, 4),
             "best_p": round(best_p, 4),
+            "r_ci_low": round(best_ci_low, 4),
+            "r_ci_high": round(best_ci_high, 4),
             "behavioral_std": round(beh_std, 4),
+            "behavioral_mean": round(float(np.mean(behavioral_drifts)), 4),
+            "score_t1_mean": round(float(np.mean(scores_t1)), 4),
+            "score_tN_mean": round(float(np.mean(scores_tN)), 4),
             "validated": validated,
             "status": status,
+            "polarity_warning": len(neg_r_layers) > 2,
+            "neg_r_layers": neg_r_layers,
             "all_layers": {str(k): v for k, v in layer_results.items()},
         }
     
@@ -778,6 +857,43 @@ def validate_all_traits(model_key: str, force_rerun: bool = False):
     output_path = f"/results/trait_layer_matrix_{model_key}.json"
     with open(output_path, "w") as f:
         json.dump(results, f, indent=2)
+    
+    # NEW: Save raw scenario data for deeper analysis (compressed)
+    raw_data_path = f"/results/raw_scenario_data_{model_key}.json"
+    
+    # Extract key metrics per scenario for analysis
+    raw_analysis_data = []
+    for s in scenario_data:
+        scenario_summary = {
+            "scenario_id": s["scenario_id"],
+            "scenario_name": s["scenario_name"],
+            "traits": {}
+        }
+        for trait in TRAIT_DEFINITIONS.keys():
+            td = s["trait_data"][trait]
+            scenario_summary["traits"][trait] = {
+                "score_t1": td["score_t1"],
+                "score_tN": td["score_tN"],
+                "behavioral_drift": td["behavioral_drift"],
+                # Best layer projections only to save space
+                "best_layer_proj_t1": td["layer_projections"].get(
+                    results["traits"][trait]["best_layer"],
+                    td["layer_projections"].get(str(results["traits"][trait]["best_layer"]), {})
+                ).get("proj_t1", 0),
+                "best_layer_proj_tN": td["layer_projections"].get(
+                    results["traits"][trait]["best_layer"],
+                    td["layer_projections"].get(str(results["traits"][trait]["best_layer"]), {})
+                ).get("proj_tN", 0),
+                "best_layer_activation_drift": td["layer_projections"].get(
+                    results["traits"][trait]["best_layer"],
+                    td["layer_projections"].get(str(results["traits"][trait]["best_layer"]), {})
+                ).get("activation_drift", 0),
+            }
+        raw_analysis_data.append(scenario_summary)
+    
+    with open(raw_data_path, "w") as f:
+        json.dump(raw_analysis_data, f)
+    print(f"✓ Raw scenario data saved to {raw_data_path} ({len(raw_analysis_data)} scenarios)")
     
     # Log experiment
     exp_id = log_experiment(model_key, results, vol)

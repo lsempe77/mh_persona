@@ -202,3 +202,62 @@ Always include in results JSON:
 6. ❌ Wrong Modal secret name
 7. ❌ Not normalizing vectors
 8. ❌ Forgetting to create /results directory before saving
+
+---
+
+## Cross-Model Lessons (Phase 2a, Feb 2026)
+
+### Why Traits Fail on Non-Llama Models
+
+**Problem 1: High Within-Class Variance (Qwen2)**
+```
+Qwen2 class separation: 43.0 (looks good!)
+Qwen2 within-class var: 0.43 (BAD - 48x higher than Llama3)
+Result: Noisy steering vector, r=0.230 avg
+```
+
+**Fix:** Use prompts that cluster tightly. Test cosine similarity WITHIN class before validation.
+
+**Problem 2: Low Prompt Consistency (Mistral)**
+```
+Mistral consistency: 0.791 (vs Llama3: 0.888)
+Result: Prompts don't represent consistent concepts, r=0.247 avg
+```
+
+**Fix:** Use Mistral-native phrasing. May need to discover what language patterns Mistral clusters well.
+
+**Problem 3: Polarity Inversion per Model**
+```
+Qwen2 non_judgmental_acceptance: negative r on layers [8, 12, 14, 15, 17]
+```
+
+**Fix:** Swap high/low prompts for that model, or redefine trait direction.
+
+**Problem 4: Layer Selection Divergence**
+```
+Stable across models (use these layers):
+  - emotional_over_involvement: L19
+  - abandonment_of_therapeutic_frame: L19
+  - crisis_recognition: L18-19
+
+Unstable (need model-specific layers):
+  - non_judgmental_acceptance: L9 (Mistral) vs L18-19 (others)
+  - sycophancy_harmful_validation: L10 (Mistral) vs L19 (others)
+```
+
+### Model-Specific Prompt Design Rules
+
+1. **For Qwen2:**
+   - Use structurally similar prompts (same sentence patterns)
+   - Less semantic diversity, more paraphrases
+   - Target within-class variance < 0.05
+
+2. **For Mistral:**
+   - Use Mistral's natural response style
+   - Shorter, more direct prompts
+   - Target prompt consistency > 0.85
+
+3. **For all models:**
+   - Test vector quality BEFORE running full validation
+   - Check polarity on multiple layers
+   - Behavioral std matters: need varied responses to detect correlation
