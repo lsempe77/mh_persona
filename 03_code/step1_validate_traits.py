@@ -226,26 +226,48 @@ TRAIT_DEFINITIONS = TRAIT_DEFINITIONS_DEFAULT.copy()
 
 def load_trait_definitions(model_key: str, volume_path: str = None) -> dict:
     """
-    Load model-specific trait definitions if available, otherwise use defaults.
+    Load trait definitions with priority order:
     
-    Phase 2b (Feb 2026): Model-specific prompts to improve cross-model validation.
-    - Qwen2: Tighter clustering, swapped polarity for non_judgmental_acceptance
-    - Mistral: Shorter, more direct prompts for higher consistency
+    Phase 2c (Feb 2026): Expanded prompts (20 per class) + cosine filtering.
     
-    Checks in order:
-    1. Modal volume path (/results/trait_definitions_{model}.json)
-    2. Local script directory (for local development)
-    3. Falls back to default definitions
+    Priority order:
+    1. Expanded definitions (trait_definitions_expanded.json) — universal, 20 prompts/class
+    2. Model-specific definitions (trait_definitions_{model}.json)
+    3. Default definitions (TRAIT_DEFINITIONS_DEFAULT, 5 prompts/class)
     """
     global TRAIT_DEFINITIONS
     
-    # For llama3, always use defaults (they were optimized for it)
+    # Priority 1: Check for expanded definitions (universal, on Modal volume)
+    if volume_path:
+        expanded_vol_path = f"{volume_path}/trait_definitions_expanded.json"
+        if os.path.exists(expanded_vol_path):
+            print(f"► Loading EXPANDED trait definitions from volume: {expanded_vol_path}")
+            with open(expanded_vol_path, encoding='utf-8') as f:
+                expanded_defs = json.load(f)
+            TRAIT_DEFINITIONS = {k: v for k, v in expanded_defs.items() if not k.startswith('_')}
+            n_prompts = len(list(TRAIT_DEFINITIONS.values())[0].get('high_prompts', []))
+            print(f"  ✓ Loaded {len(TRAIT_DEFINITIONS)} traits × {n_prompts} prompts/class for {model_key}")
+            return TRAIT_DEFINITIONS
+    
+    # Also check local directory for expanded definitions
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    expanded_local_path = os.path.join(script_dir, "trait_definitions_expanded.json")
+    if os.path.exists(expanded_local_path):
+        print(f"► Loading EXPANDED trait definitions: {expanded_local_path}")
+        with open(expanded_local_path, encoding='utf-8') as f:
+            expanded_defs = json.load(f)
+        TRAIT_DEFINITIONS = {k: v for k, v in expanded_defs.items() if not k.startswith('_')}
+        n_prompts = len(list(TRAIT_DEFINITIONS.values())[0].get('high_prompts', []))
+        print(f"  ✓ Loaded {len(TRAIT_DEFINITIONS)} traits × {n_prompts} prompts/class for {model_key}")
+        return TRAIT_DEFINITIONS
+    
+    # Priority 2: For llama3, use defaults (they were optimized for it)
     if model_key == "llama3":
         print(f"► Using default trait definitions (optimized for Llama3)")
         TRAIT_DEFINITIONS = TRAIT_DEFINITIONS_DEFAULT.copy()
         return TRAIT_DEFINITIONS
     
-    # Check Modal volume path first (when running on Modal)
+    # Priority 3: Check Modal volume for model-specific definitions
     if volume_path:
         vol_defs_path = f"{volume_path}/trait_definitions_{model_key}.json"
         if os.path.exists(vol_defs_path):
@@ -256,8 +278,7 @@ def load_trait_definitions(model_key: str, volume_path: str = None) -> dict:
             print(f"  ✓ Loaded {len(TRAIT_DEFINITIONS)} traits for {model_key}")
             return TRAIT_DEFINITIONS
     
-    # Check local script directory (for local development / Modal local_entrypoint)
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # Priority 4: Check local directory for model-specific definitions
     local_defs_path = os.path.join(script_dir, f"trait_definitions_{model_key}.json")
     
     if os.path.exists(local_defs_path):
@@ -562,6 +583,11 @@ def extract_steering_vectors(model_key: str):
     
     np.random.seed(42)
     
+    # CRITICAL: Load expanded trait definitions from volume
+    # Without this, the function uses the module-level default (5 prompts/class)
+    vol.reload()
+    load_trait_definitions(model_key, volume_path="/results")
+    
     model_config = MODELS[model_key]
     model_id = model_config["id"]
     
@@ -616,36 +642,150 @@ def extract_steering_vectors(model_key: str):
             
             high_stack = torch.stack(high_acts)
             low_stack = torch.stack(low_acts)
-            high_mean = high_stack.mean(dim=0)
-            low_mean = low_stack.mean(dim=0)
-            direction = high_mean - low_mean
+            
+            # Phase 2c: Cosine filtering — iteratively remove outlier prompts
+            # Step 1: Compute initial means and cosine similarities
+            COSINE_THRESHOLD = 0.80  # Drop prompts below this
+            MIN_PROMPTS = 5  # Never drop below this many prompts
+            
+            high_mean_raw = high_stack.mean(dim=0)
+            low_mean_raw = low_stack.mean(dim=0)
+            
+            high_cos_sims_raw = [torch.nn.functional.cosine_similarity(h.unsqueeze(0), high_mean_raw.unsqueeze(0)).item() for h in high_acts]
+            low_cos_sims_raw = [torch.nn.functional.cosine_similarity(l.unsqueeze(0), low_mean_raw.unsqueeze(0)).item() for l in low_acts]
+            
+            # Step 2: Filter — keep prompts with cosine >= threshold
+            high_mask = [c >= COSINE_THRESHOLD for c in high_cos_sims_raw]
+            low_mask = [c >= COSINE_THRESHOLD for c in low_cos_sims_raw]
+            
+            # Ensure we keep at least MIN_PROMPTS (keep top-k by cosine if too many filtered)
+            if sum(high_mask) < MIN_PROMPTS:
+                top_indices = sorted(range(len(high_cos_sims_raw)), key=lambda i: high_cos_sims_raw[i], reverse=True)[:MIN_PROMPTS]
+                high_mask = [i in top_indices for i in range(len(high_cos_sims_raw))]
+            if sum(low_mask) < MIN_PROMPTS:
+                top_indices = sorted(range(len(low_cos_sims_raw)), key=lambda i: low_cos_sims_raw[i], reverse=True)[:MIN_PROMPTS]
+                low_mask = [i in top_indices for i in range(len(low_cos_sims_raw))]
+            
+            high_filtered = [h for h, m in zip(high_acts, high_mask) if m]
+            low_filtered = [l for l, m in zip(low_acts, low_mask) if m]
+            n_high_dropped = len(high_acts) - len(high_filtered)
+            n_low_dropped = len(low_acts) - len(low_filtered)
+            
+            # Step 3: Recompute means from filtered prompts
+            high_stack_filtered = torch.stack(high_filtered)
+            low_stack_filtered = torch.stack(low_filtered)
+            high_mean = high_stack_filtered.mean(dim=0)
+            low_mean = low_stack_filtered.mean(dim=0)
+            
+            # Phase 2c Solution C: PCA denoising of steering direction
+            # Instead of raw mean difference, compute pairwise differences and
+            # extract the dominant principal component (the shared trait signal).
+            # This removes noise dimensions where individual prompts disagree.
+            n_high = len(high_filtered)
+            n_low = len(low_filtered)
+            
+            # Build difference matrix: all (high_i - low_j) pairs
+            diff_vectors = []
+            for h in high_filtered:
+                for l in low_filtered:
+                    diff_vectors.append(h - l)
+            diff_matrix = torch.stack(diff_vectors)  # [n_high * n_low, hidden_dim]
+            
+            # Center the differences
+            diff_mean = diff_matrix.mean(dim=0)
+            diff_centered = diff_matrix - diff_mean
+            
+            # PCA via SVD on centered differences
+            if diff_centered.shape[0] >= 2:
+                try:
+                    # Use torch SVD (works on CPU float tensors)
+                    U, S, Vh = torch.linalg.svd(diff_centered, full_matrices=False)
+                    
+                    # First principal component captures the dominant contrast direction
+                    pc1 = Vh[0]  # [hidden_dim]
+                    
+                    # Variance explained by PC1
+                    total_var = (S ** 2).sum().item()
+                    pc1_var = (S[0] ** 2).item()
+                    pca_var_explained = pc1_var / (total_var + 1e-8)
+                    
+                    # Ensure PC1 aligns with the mean difference direction
+                    mean_diff = diff_mean  # raw mean of all pairwise diffs
+                    if torch.dot(pc1, mean_diff) < 0:
+                        pc1 = -pc1  # Flip to align with high→low direction
+                    
+                    # Use PCA direction if it explains enough variance (>20%)
+                    # Otherwise fall back to simple mean difference
+                    PCA_VAR_THRESHOLD = 0.15
+                    if pca_var_explained >= PCA_VAR_THRESHOLD:
+                        direction = pc1
+                        used_pca = True
+                    else:
+                        direction = diff_mean
+                        used_pca = False
+                except Exception as e:
+                    # SVD failed (e.g., numerical issues) — fallback
+                    direction = high_mean - low_mean
+                    pca_var_explained = 0.0
+                    used_pca = False
+            else:
+                direction = high_mean - low_mean
+                pca_var_explained = 0.0
+                used_pca = False
+            
             raw_norm = direction.norm().item()
             direction = direction / (direction.norm() + 1e-8)
             
-            # NEW: Compute diagnostic statistics
-            high_var = high_stack.var(dim=0).mean().item()  # Within-class variance
-            low_var = low_stack.var(dim=0).mean().item()
-            separation = (high_mean - low_mean).norm().item()  # Class separation
+            # Phase 2c: Automatic polarity check
+            # Verify that high prompts project higher than low prompts onto the direction.
+            # If inverted (high < low), flip the direction vector.
+            high_projs = [torch.dot(h, direction).item() for h in high_filtered]
+            low_projs = [torch.dot(l, direction).item() for l in low_filtered]
+            mean_high_proj = np.mean(high_projs)
+            mean_low_proj = np.mean(low_projs)
+            polarity_flipped = False
+            if mean_high_proj < mean_low_proj:
+                direction = -direction
+                polarity_flipped = True
             
-            # Cosine similarities between individual prompts and mean
-            high_cos_sims = [torch.nn.functional.cosine_similarity(h.unsqueeze(0), high_mean.unsqueeze(0)).item() for h in high_acts]
-            low_cos_sims = [torch.nn.functional.cosine_similarity(l.unsqueeze(0), low_mean.unsqueeze(0)).item() for l in low_acts]
+            # Diagnostic statistics (on filtered data)
+            high_var = high_stack_filtered.var(dim=0).mean().item()
+            low_var = low_stack_filtered.var(dim=0).mean().item()
+            separation = (high_mean - low_mean).norm().item()
+            
+            # Cosine sims AFTER filtering (relative to filtered mean)
+            high_cos_sims = [torch.nn.functional.cosine_similarity(h.unsqueeze(0), high_mean.unsqueeze(0)).item() for h in high_filtered]
+            low_cos_sims = [torch.nn.functional.cosine_similarity(l.unsqueeze(0), low_mean.unsqueeze(0)).item() for l in low_filtered]
             
             vector_diagnostics[trait][str(layer)] = {
                 "raw_norm": float(raw_norm),
                 "separation": float(separation),
                 "high_within_var": float(high_var),
                 "low_within_var": float(low_var),
-                "high_cos_sims": high_cos_sims,  # Consistency of high prompts
-                "low_cos_sims": low_cos_sims,    # Consistency of low prompts
+                "high_cos_sims": high_cos_sims,
+                "low_cos_sims": low_cos_sims,
                 "high_mean_cos": float(np.mean(high_cos_sims)),
                 "low_mean_cos": float(np.mean(low_cos_sims)),
+                "high_cos_sims_raw": high_cos_sims_raw,  # Before filtering
+                "low_cos_sims_raw": low_cos_sims_raw,
+                "n_high_total": len(high_acts),
+                "n_high_kept": len(high_filtered),
+                "n_low_total": len(low_acts),
+                "n_low_kept": len(low_filtered),
+                "cosine_threshold": COSINE_THRESHOLD,
+                "pca_var_explained": float(pca_var_explained),
+                "used_pca": used_pca,
+                "polarity_flipped": polarity_flipped,
             }
             
             # Convert to list for serialization
             steering_vectors[trait][str(layer)] = direction.tolist()
         
-        print(f"  ✓ {trait}")
+        # Summary for this trait (report filtering stats at the most common best layer = 19)
+        best_diag_layer = "19" if "19" in vector_diagnostics[trait] else list(vector_diagnostics[trait].keys())[-1]
+        diag = vector_diagnostics[trait][best_diag_layer]
+        pca_info = f"PCA={'YES' if diag.get('used_pca', False) else 'NO'} var={diag.get('pca_var_explained', 0):.2f}"
+        print(f"  ✓ {trait} (L{best_diag_layer}: kept {diag['n_high_kept']}/{diag['n_high_total']} high, {diag['n_low_kept']}/{diag['n_low_total']} low, cos H={diag['high_mean_cos']:.3f} L={diag['low_mean_cos']:.3f}, {pca_info})")
     
     # Save to volume instead of returning (too large to pass between functions)
     import pickle
@@ -996,20 +1136,27 @@ def main(model: str = "llama3", force: bool = False):
         modal run step1_validate_traits.py --model qwen2 --force
         modal run step1_validate_traits.py --model mistral --force
     """
-    # Upload model-specific trait definitions to volume if they exist locally
-    if model in ["qwen2", "mistral"]:
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        local_path = os.path.join(script_dir, f"trait_definitions_{model}.json")
-        
-        if os.path.exists(local_path):
-            print(f"► Uploading trait definitions for {model} to Modal volume...")
-            # Upload via Modal volume
-            with vol.batch_upload() as batch:
-                batch.put_file(local_path, f"trait_definitions_{model}.json")
-            print(f"  ✓ Uploaded {local_path}")
-        else:
-            print(f"⚠ No model-specific trait definitions found at {local_path}")
-            print(f"  Using default (Llama3-optimized) definitions")
+    # Upload expanded trait definitions to volume (Phase 2c: 20 prompts/class)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    expanded_path = os.path.join(script_dir, "trait_definitions_expanded.json")
+    
+    if os.path.exists(expanded_path):
+        print(f"► Uploading EXPANDED trait definitions to Modal volume...")
+        with vol.batch_upload(force=True) as batch:
+            batch.put_file(expanded_path, "trait_definitions_expanded.json")
+        print(f"  ✓ Uploaded {expanded_path} (20 prompts/class + cosine filtering)")
+    else:
+        print(f"⚠ No expanded trait definitions found at {expanded_path}")
+        # Fallback: upload model-specific if available
+        if model in ["qwen2", "mistral"]:
+            local_path = os.path.join(script_dir, f"trait_definitions_{model}.json")
+            if os.path.exists(local_path):
+                print(f"  ► Uploading model-specific definitions for {model}...")
+                with vol.batch_upload() as batch:
+                    batch.put_file(local_path, f"trait_definitions_{model}.json")
+                print(f"  ✓ Uploaded {local_path}")
+            else:
+                print(f"  Using default (Llama3-optimized) definitions")
     
     result = validate_all_traits.remote(model, force)
     
