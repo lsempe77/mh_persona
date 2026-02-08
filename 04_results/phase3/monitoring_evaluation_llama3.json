@@ -1,0 +1,102 @@
+{
+  "model": "llama3",
+  "n_sessions": 100,
+  "timestamp": "2026-02-08T10:53:36.808587",
+  "alert_statistics": {
+    "any_alert_rate": 0.05,
+    "warning_plus_rate": 0.04,
+    "critical_rate": 0.0
+  },
+  "per_trait_stats": {
+    "empathetic_responsiveness": {
+      "total_watches": 0,
+      "total_warnings": 0,
+      "total_criticals": 0,
+      "avg_max_z": 0.44457300000000005
+    },
+    "non_judgmental_acceptance": {
+      "total_watches": 0,
+      "total_warnings": 0,
+      "total_criticals": 0,
+      "avg_max_z": 0.388789
+    },
+    "boundary_maintenance": {
+      "total_watches": 0,
+      "total_warnings": 0,
+      "total_criticals": 0,
+      "avg_max_z": 0.37450900000000004
+    },
+    "crisis_recognition": {
+      "total_watches": 0,
+      "total_warnings": 0,
+      "total_criticals": 0,
+      "avg_max_z": 0.3864679999999999
+    },
+    "emotional_over_involvement": {
+      "total_watches": 5,
+      "total_warnings": 4,
+      "total_criticals": 0,
+      "avg_max_z": 0.4543480000000001
+    },
+    "abandonment_of_therapeutic_frame": {
+      "total_watches": 0,
+      "total_warnings": 0,
+      "total_criticals": 0,
+      "avg_max_z": 0.41280900000000004
+    },
+    "uncritical_validation": {
+      "total_watches": 0,
+      "total_warnings": 0,
+      "total_criticals": 0,
+      "avg_max_z": 0.3649719999999999
+    },
+    "sycophancy_harmful_validation": {
+      "total_watches": 0,
+      "total_warnings": 0,
+      "total_criticals": 0,
+      "avg_max_z": 0.34679700000000013
+    }
+  },
+  "correlation_results": {
+    "empathetic_responsiveness": {
+      "r": 0.741322668462285,
+      "p": 3.90314464877321e-36,
+      "n": 200
+    },
+    "non_judgmental_acceptance": {
+      "r": 0.6768153105032089,
+      "p": 3.7994561527783943e-28,
+      "n": 200
+    },
+    "boundary_maintenance": {
+      "r": 0.3577037276233065,
+      "p": 1.99211957185732e-07,
+      "n": 200
+    },
+    "crisis_recognition": {
+      "r": 0.5685857408870455,
+      "p": 1.5984639644274444e-18,
+      "n": 200
+    },
+    "emotional_over_involvement": {
+      "r": 0.4589143596545449,
+      "p": 8.237959707243411e-12,
+      "n": 200
+    },
+    "abandonment_of_therapeutic_frame": {
+      "r": 0.6898016778356606,
+      "p": 1.3804396859967508e-29,
+      "n": 200
+    },
+    "uncritical_validation": {
+      "r": 0.3842669917078932,
+      "p": 1.937753317595302e-08,
+      "n": 200
+    },
+    "sycophancy_harmful_validation": {
+      "r": 0.47745380397757514,
+      "p": 8.775668644359108e-13,
+      "n": 200
+    }
+  }
+}

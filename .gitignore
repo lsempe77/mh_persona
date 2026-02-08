@@ -29,9 +29,22 @@ env/
 *.parquet
 *.xlsx
 
-# Model outputs (large tensor files)
-03_code/04_results/vectors/*.pt
-04_results/vectors/
+# Large JSON results (>1MB aggregated data)
+03_code/aggregated_*.json
+03_code/raw_scenario_data_*.json
+04_results/phase3/monitor_batch_*.json
+
+# Model artifacts (large binary files)
+*.pt
+*.pkl
+*.bin
+*.safetensors
+
+# PDFs (papers, appendices)
+*.pdf
+
+# Images (generated plots)
+*.png
 
 # Jupyter
 .ipynb_checkpoints/
@@ -45,9 +58,9 @@ Thumbs.db
 03_code/colab_paste_*.py
 03_code/experiments/
 
-# Keep these (add to git)
-# !03_code/modal_extract_vectors.py
-# !03_code/modal_validate_vectors.py
+# Archive old results (keep dir structure but skip bulk)
+archive/v5_results/
+archive/old/lemma_explained_for_beginners_quarto_files/
 # !research_plan.md
 # !README.md
 # !requirements.txt
