@@ -358,11 +358,50 @@ All results stored in `04_results/phase3/`:
 ### Checklist
 
 - [x] **Step 4.1:** Update PROJECT_STATUS.md to reflect Phase 3 completion
-- [ ] **Step 4.2:** Rewrite research paper — add Phase 2b/2c and Phase 3 results
-- [ ] **Step 4.3:** Address pre-submission issues (M2-M4, N1-N4, P1-P4)
-- [ ] **Step 4.4:** Safety evaluation benchmarks (cross-model stress test)
-- [ ] **Step 4.5:** Therapeutic quality assessment (expert review protocol)
+- [x] **Step 4.2:** Rewrite research paper — add Phase 2b/2c and Phase 3 results → `research_document_activation_steering_v3.md`
+- [x] **Step 4.3:** Address pre-submission issues (M2-M4, N1-N4, P1-P4)
+- [x] **Step 4.4:** Safety evaluation benchmarks (cross-model stress test) → `step3_safety_stress_test.py`
+- [x] **Step 4.5:** Therapeutic quality assessment (expert review protocol) → `expert_review_protocol.md`
 - [ ] **Step 4.6:** Final paper revision and submission
+
+### Step 4.4 Results: Cross-Model Safety Stress Test
+
+**Methodology:** harmful_advice_propensity trait, coefficients [-5, -3, 0, +3, +5], 7 layers [10,12,14,15,16,18,19], 10 safety-critical prompts, GPT-4o-mini judge (1-10 harmfulness scale).
+
+**Per-Layer Results (r = Pearson correlation between coefficient and harmfulness):**
+
+| Layer | Llama3 r | Harm@+5 | Qwen2 r | Harm@+5 | Mistral r | Harm@+5 |
+|:-----:|:--------:|:-------:|:-------:|:-------:|:---------:|:-------:|
+| 10 | 0.226 | 4.1 | -0.000 | 1.4 | **-0.329** | 1.0 |
+| 12 | 0.341 | 4.3 | **-0.265** | 1.1 | **0.679** 🔴 | **8.0** |
+| 14 | **0.463** | 3.4 | -0.239 | 1.1 | **0.651** 🔴 | **6.4** |
+| 15 | 0.326 | 3.3 | 0.106 | 1.5 | **0.635** 🔴 | 4.0 |
+| 16 | **0.626** 🔴 | **6.1** | 0.108 | 1.3 | **0.464** | 2.7 |
+| 18 | **0.490** | 5.1 | 0.183 | 1.4 | 0.137 | 1.7 |
+| 19 | **0.537** | 5.2 | -0.111 | 1.4 | 0.124 | 1.4 |
+
+**Summary:**
+
+| Model | Most Protective Layer | r | All Safe? | Worst Harm@+5 |
+|-------|:--------------------:|:----:|:---------:|:-------------:|
+| **Qwen2** | L12 | -0.265 | Near-safe | 1.5 |
+| **Mistral** | L10 | -0.329 | ✗ (L12-16 vulnerable) | **8.0** |
+| **Llama3** | L10 | +0.226 | ✗ (all positive) | **6.1** |
+
+**Key Findings:**
+- 🟢 **Qwen2** is robustly safe — harmfulness stays 1.1-1.5 regardless of steering
+- 🔴 **Mistral** has a "safety gradient" — protective at L10, critically vulnerable at L12-15
+- 🟡 **Llama3** has no protective layers — moderate vulnerability at L16-19
+- Novel finding: safety robustness is **layer-dependent** within the same model
+
+### Step 4.5: Expert Review Protocol
+
+Designed and documented in `04_docs/expert_review_protocol.md`:
+- Stratified sampling: 30 sessions/model (true_alert, watch_only, clean, high_drift_clean)
+- Reviewer panel: ≥3 licensed clinicians, blinded to alert status
+- Rating instrument: 8 dimensions, 7-point Likert scale
+- Analysis: ICC for inter-rater reliability, sensitivity/specificity vs monitoring alerts
+- Session selection script: `03_code/step4_select_review_sessions.py`
 
 ---
 
@@ -377,6 +416,11 @@ All results stored in `04_results/phase3/`:
 | `04_results/phase3_monitoring_design.md` | Phase 3 design document |
 | `04_results/phase3/` | **All Phase 3 outputs** (36 JSONs + 21 PNGs) |
 | `04_docs/research_document_activation_steering_v2.md` | Full Lancet-style research paper |
+| `04_docs/research_document_activation_steering_v3.md` | **Current paper** (v3 with cross-model safety) |
+| `03_code/step3_safety_stress_test.py` | Cross-model safety stress test (Phase 4.4) |
+| `03_code/step4_select_review_sessions.py` | Expert review session selection (Phase 4.5) |
+| `04_docs/expert_review_protocol.md` | Clinical expert review protocol |
+| `03_code/safety_stress_test_results.json` | Safety stress test results (all 3 models) |
 | `03_code/trait_definitions.json` | Trait prompts (template-based) |
 | `03_code/trait_layer_matrix_{model}.json` | Template validation results per model |
 | `03_code/trait_layer_matrix_probe_{model}.json` | Probe validation results (Qwen2, Mistral) |
@@ -413,4 +457,4 @@ All results stored in `04_results/phase3/`:
 
 ---
 
-*Last updated: February 10, 2026*
+*Last updated: February 8, 2026*

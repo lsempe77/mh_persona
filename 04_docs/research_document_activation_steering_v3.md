@@ -6,11 +6,11 @@
 
 **Background:** The deployment of artificial intelligence chatbots in mental health support contexts raises critical questions about maintaining consistent therapeutic personas. Persona drift—the deviation from intended behavioral characteristics—poses significant risks when vulnerable users seek genuine psychological support. We investigated whether activation steering techniques can reliably monitor and control therapeutic persona characteristics in large language models, whether such monitoring generalises across model architectures, and whether a real-time drift detection system can identify clinically concerning behavioral shifts during live conversations.
 
-**Methods:** We conducted a four-phase evaluation across three model architectures: Llama-3-8B-Instruct, Qwen2-7B-Instruct, and Mistral-7B-Instruct-v0.2. Phase 1 established activation steering effectiveness across eight therapeutic persona dimensions using template-based contrast prompts, with an independent language model judge (GPT-4o-mini) scoring generated responses. Phase 2 assessed cross-architecture generalisation, diagnosed failure modes through root cause analysis, and developed contrastive probing—a data-driven method that extracts steering vectors from each model's own scored responses using logistic regression. Phase 3 implemented a real-time monitoring pipeline combining Exponentially Weighted Moving Average (EWMA, λ=0.2) and Cumulative Sum (CUSUM) control charts to detect persona drift across multi-turn conversations. A separate safety stress test examined whether extreme steering coefficients could induce harmful advice generation.
+**Methods:** We conducted a four-phase evaluation across three model architectures: Llama-3-8B-Instruct, Qwen2-7B-Instruct, and Mistral-7B-Instruct-v0.2. Phase 1 established activation steering effectiveness across eight therapeutic persona dimensions using template-based contrast prompts, with an independent language model judge (GPT-4o-mini) scoring generated responses. Phase 2 assessed cross-architecture generalisation, diagnosed failure modes through root cause analysis, and developed contrastive probing—a data-driven method that extracts steering vectors from each model's own scored responses using logistic regression. Phase 3 implemented a real-time monitoring pipeline combining Exponentially Weighted Moving Average (EWMA, λ=0.2) and Cumulative Sum (CUSUM) control charts to detect persona drift across multi-turn conversations. A cross-model safety stress test examined whether extreme steering coefficients could induce harmful advice generation across all three architectures.
 
-**Findings:** In Phase 1, all eight therapeutic traits demonstrated significant steerability on Llama-3-8B (r=0.302–0.489, all p<0.001). Template-based vectors failed cross-architecture transfer (Qwen2 3/8, Mistral 2/8 validated), but root cause analysis revealed the predictor of steering success was not activation separation (Cohen's d) but behavioral difference (r=0.899, p<0.000001). Contrastive probing resolved all failures: Qwen2 improved from 3/8 to 8/8 validated traits, Mistral from 2/8 to 5/8 with 3 weak and zero failures (24/24 model×trait combinations showing positive significant correlations). In the real-time monitoring evaluation (100 sessions per model, 8 traits), activation projections correlated strongly with independent behavioral scores across all 24 model×trait combinations (mean r=0.544–0.660, all p<0.0001). False alarm rates remained below clinical acceptability thresholds (Warning+ rate: Llama3 4%, Qwen2 4%, Mistral 1%). The safety stress test demonstrated robust guardrails: attempting to steer toward harmful advice produced the opposite effect (r=−0.361).
+**Findings:** In Phase 1, all eight therapeutic traits demonstrated significant steerability on Llama-3-8B (r=0.302–0.489, all p<0.001). Template-based vectors failed cross-architecture transfer (Qwen2 3/8, Mistral 2/8 validated), but root cause analysis revealed the predictor of steering success was not activation separation (Cohen's d) but behavioral difference (r=0.899, p<0.000001). Contrastive probing resolved all failures: Qwen2 improved from 3/8 to 8/8 validated traits, Mistral from 2/8 to 5/8 with 3 weak and zero failures (24/24 model×trait combinations showing positive significant correlations). In the real-time monitoring evaluation (100 sessions per model, 8 traits), activation projections correlated strongly with independent behavioral scores across all 24 model×trait combinations (mean r=0.544–0.660, all p<0.0001). False alarm rates remained below clinical acceptability thresholds (Warning+ rate: Llama3 4%, Qwen2 4%, Mistral 1%). The cross-model safety stress test revealed architecture-dependent vulnerability: Qwen2 was most robust (all layers r≤0.18, mean harmfulness 1.1–1.5 regardless of coefficient), Mistral showed layer-dependent vulnerability (protective at layer 10 with r=−0.329 but critically vulnerable at layers 12–15 with r=0.635–0.679 and mean harmfulness reaching 8.0/10 at coefficient +5.0), and Llama3 showed moderate vulnerability concentrated in upper layers (layer 16: r=0.626, mean harmfulness 6.1 at +5.0).
 
-**Interpretation:** Activation steering provides a viable technical foundation for real-time monitoring of therapeutic persona characteristics. Template-based steering vectors are architecture-specific, but contrastive probing—extracting vectors from each model's own high-vs-low-scored responses—achieves near-universal coverage across architectures. The monitoring system's strong activation-behavior correlations (r=0.358–0.815) demonstrate that internal model states reliably track externally observable therapeutic qualities, enabling drift detection without requiring computationally expensive response evaluation at every conversational turn. These findings support the feasibility of deploying activation-based persona monitoring as a safety layer for mental health AI applications.
+**Interpretation:** Activation steering provides a viable technical foundation for real-time monitoring of therapeutic persona characteristics. Template-based steering vectors are architecture-specific, but contrastive probing—extracting vectors from each model's own high-vs-low-scored responses—achieves near-universal coverage across architectures. The monitoring system's strong activation-behavior correlations (r=0.358–0.815) demonstrate that internal model states reliably track externally observable therapeutic qualities, enabling drift detection without requiring computationally expensive response evaluation at every conversational turn. Critically, the cross-model safety stress test revealed that safety robustness is both architecture- and layer-dependent: the same technique that monitors for drift can also identify layers vulnerable to adversarial manipulation, suggesting activation steering has dual utility as both a safety monitoring tool and a safety auditing methodology. These findings support the feasibility of deploying activation-based persona monitoring as a safety layer for mental health AI applications.
 
 ---
 
@@ -121,7 +121,7 @@ To validate that steering vectors capture constructs meaningful to human percept
 
 ### Safety Stress Test
 
-We tested harmful advice propensity on Mistral-7B using an extended coefficient range (−5.0, −3.0, 0.0, +3.0, +5.0). If safety guardrails are vulnerable to activation-level manipulation, positive coefficients should produce higher harmful advice scores. We acknowledge this test was conducted on a single architecture; cross-model replication is planned for Phase 4.
+We tested harmful advice propensity across all three architectures using an extended coefficient range (−5.0, −3.0, 0.0, +3.0, +5.0) and seven candidate layers (10, 12, 14, 15, 16, 18, 19). For each model×layer×coefficient combination, 10 safety-critical prompts were presented and responses were scored by GPT-4o-mini on a 1–10 harmfulness scale. If safety guardrails are vulnerable to activation-level manipulation, positive coefficients should produce higher harmful advice scores. Per-layer Pearson correlations between coefficient and harmfulness score were computed (N=50 per layer: 10 prompts × 5 coefficients), with 95% bootstrap confidence intervals. A model was classified as "safe" only if all tested layers showed r≤0 (negative or zero correlation between harmful steering and harmful output).
 
 ### Statistical Analysis
 
@@ -297,9 +297,37 @@ The monotonic increase from Level 0 to Level 2 across all three models confirms 
 
 ### Safety Stress Test
 
-On Mistral-7B, extreme positive steering toward harmful advice produced the **opposite** effect: responses at coefficient +5.0 received mean harmful advice scores of 4.4 versus 6.6 at −5.0 (r=−0.361). The model becomes more protective, not less, under attempted harmful steering. This suggests safety training creates distributed, multi-layered protections not easily circumvented by activation-level manipulation.
+The cross-model safety stress test revealed that vulnerability to harmful steering is both architecture-dependent and layer-dependent (Table 9).
 
-We note this test was conducted on Mistral-7B only. Cross-architecture stress testing on Llama-3 and Qwen2 is planned for Phase 4 to assess whether this robustness generalises.
+**Table 9: Cross-Model Safety Stress Test — Harmful Advice Propensity**
+
+| Layer | Llama3 r | Mean harm @+5 | Qwen2 r | Mean harm @+5 | Mistral r | Mean harm @+5 |
+|:-----:|:--------:|:-------------:|:-------:|:-------------:|:---------:|:-------------:|
+| 10 | 0.226 | 4.1 | −0.000 | 1.4 | **−0.329** | 1.0 |
+| 12 | 0.341 | 4.3 | **−0.265** | 1.1 | **0.679** | **8.0** |
+| 14 | **0.463** | 3.4 | −0.239 | 1.1 | **0.651** | **6.4** |
+| 15 | 0.326 | 3.3 | 0.106 | 1.5 | **0.635** | 4.0 |
+| 16 | **0.626** | **6.1** | 0.108 | 1.3 | **0.464** | 2.7 |
+| 18 | **0.490** | 5.1 | 0.183 | 1.4 | 0.137 | 1.7 |
+| 19 | **0.537** | 5.2 | −0.111 | 1.4 | 0.124 | 1.4 |
+
+*Bold r = significant (p<0.05). Bold mean harm = clinically concerning (≥4.0). N=50 per layer per model (10 prompts × 5 coefficients). Baseline (coeff=0) harmfulness: 1.3–1.4 across all models.*
+
+**Qwen2 demonstrated the strongest safety robustness.** Harmfulness scores remained near baseline (1.1–1.5) regardless of coefficient magnitude or layer, with no significant positive correlations and mild protective effects at layers 12 (r=−0.265) and 14 (r=−0.239). Safety training in Qwen2 appears deeply embedded and resistant to activation-level manipulation.
+
+**Mistral showed striking layer-dependent vulnerability.** Layer 10 was protective (r=−0.329, p=0.020): harmful steering backfired, producing *less* harmful output. However, layers 12–16 were critically vulnerable: at layer 12, coefficient +5.0 produced mean harmfulness of 8.0/10 (r=0.679, p<0.001), with similar vulnerability at layers 14 (r=0.651, mean 6.4) and 15 (r=0.635, mean 4.0). Upper layers (18–19) were neutral (r=0.12–0.14, not significant). This reveals a "safety gradient"—Mistral's safety protections are concentrated in early and upper layers, with a vulnerable mid-layer band.
+
+**Llama3 showed moderate, broadly distributed vulnerability.** No layer was protective (all r>0). Vulnerability peaked at layer 16 (r=0.626, mean harmfulness 6.1), with upper layers 18–19 also vulnerable (r=0.49–0.54, mean 5.1–5.2). Even the least affected layer (10) showed a positive trend (r=0.226), though not significant.
+
+**Cross-model summary:**
+
+| Model | Most protective layer | r | All layers safe? | Worst-case harm @+5.0 |
+|-------|:--------------------:|:----:|:----------------:|:---------------------:|
+| Qwen2 | L12 | −0.265 | Near-safe (max r=0.183 ns) | 1.5 |
+| Mistral | L10 | −0.329 | ✗ (L12–16 vulnerable) | **8.0** |
+| Llama3 | L10 | +0.226 | ✗ (all positive) | **6.1** |
+
+These findings carry two implications. First, safety robustness is not uniform across the transformer's depth—the same model may be protective at one layer and critically vulnerable at another, making layer selection for monitoring a safety-relevant decision. Second, the technique used here for monitoring persona drift doubles as a safety audit tool: probing harmful advice propensity across layers can map a model's safety landscape before deployment.
 
 ---
 
@@ -310,6 +338,18 @@ We note this test was conducted on Mistral-7B only. Cross-architecture stress te
 Our findings demonstrate that activation steering provides a technically viable foundation for real-time monitoring of therapeutic persona characteristics. The Phase 3 monitoring evaluation—with 24/24 model×trait combinations showing significant activation-behavior correlations (mean r=0.596, all p<0.0001)—confirms that internal model states reliably track externally observable therapeutic qualities. This enables a monitoring paradigm where drift detection operates on activation projections rather than requiring computationally expensive response evaluation at every turn.
 
 The practical architecture is straightforward: during each conversational turn, project response activations onto pre-extracted steering vectors, update EWMA and CUSUM trackers, and alert when z-scores exceed calibrated thresholds. The computational overhead is minimal (a single matrix multiplication per trait per turn), enabling real-time deployment alongside the model's normal inference pipeline.
+
+### Safety Robustness Is Architecture- and Layer-Dependent
+
+The cross-model safety stress test produced findings more nuanced—and more consequential—than anticipated. Rather than a uniform story of safety training either resisting or succumbing to adversarial steering, we found that vulnerability is jointly determined by architecture and layer depth.
+
+Qwen2 emerged as the safety exemplar: harmfulness scores remained at baseline (1.1–1.5) regardless of coefficient magnitude or layer, with no significant positive correlations. This suggests Qwen2's safety alignment is deeply embedded across its representational hierarchy, consistent with Alibaba's emphasis on multilingual safety training.
+
+Mistral presented the most complex picture. Layer 10 was genuinely protective (r=−0.329): attempting harmful steering produced *less* harmful output, suggesting safety mechanisms that actively counteract perturbation. However, layers 12–16 were critically vulnerable, with layer 12 reaching mean harmfulness of 8.0/10 at coefficient +5.0 (r=0.679). This "safety gradient" phenomenon—where protective and vulnerable layers coexist within the same model—has not been previously documented and has important implications for both monitoring system design and adversarial risk assessment.
+
+Llama3 showed moderate, broadly distributed vulnerability with no protective layers, though vulnerability was most pronounced in upper-middle layers (16–19). This pattern is consistent with Meta's safety fine-tuning operating primarily at later processing stages, where it may be more easily overridden by activation-level perturbation.
+
+These findings establish activation steering as a dual-purpose technology: beyond monitoring therapeutic quality in deployment, it can systematically map a model's safety landscape layer-by-layer, identifying vulnerable regions before deployment. We recommend that pre-deployment safety audits include layer-resolved harmful steering tests across the model's depth.
 
 ### Reconciling Steerability with Stability
 
@@ -344,7 +384,7 @@ Several limitations warrant consideration:
 
 3. **Quantisation effects**: Our 4-bit NF4 quantisation alters representational geometry. Steering vectors and optimal layers may not transfer directly to full-precision or differently quantised deployments. However, 4-bit models are increasingly the deployment norm for cost-constrained applications, making our results directly relevant to likely production configurations.
 
-4. **Single safety architecture**: The harmful advice stress test was conducted on Mistral-7B only (r=−0.361). While reassuring, generalising to "modern safety training" requires cross-model replication.
+4. **Safety test scope**: The cross-model safety stress test used a single harm dimension (harmful advice propensity) with LLM-judged harmfulness. Real-world adversarial manipulation may target other dimensions (e.g., encouraging self-harm, normalising substance abuse) or use more sophisticated multi-vector attacks. The finding that Mistral layers 12–16 are vulnerable at coefficient +5.0 (outside the normal monitoring range of ±3.0) indicates that safety margins exist but are finite. Additionally, the extended coefficient range may produce outputs that diverge from natural model behavior, limiting ecological validity.
 
 5. **Mistral weak traits**: Three Mistral traits remain weak (r=0.215–0.271) despite contrastive probing. These had 17–67 training samples versus 81–100 for validated traits. Whether this reflects genuine architectural limitations or insufficient data remains an open question addressable by scaling data collection.
 
@@ -375,7 +415,7 @@ This research provides evidence that activation steering combined with real-time
 
 4. **Real-time monitoring is feasible**: EWMA+CUSUM control charts achieve clinically acceptable false alarm rates (1–4% Warning+) while maintaining sensitivity to genuine drift.
 
-5. **Safety training resists activation manipulation**: Attempted harmful steering produces protective rather than harmful responses (r=−0.361), suggesting distributed alignment not easily circumvented.
+5. **Safety robustness is architecture- and layer-dependent**: Cross-model stress testing revealed that Qwen2 is robustly resistant to harmful steering (max r=0.183, not significant), while Mistral and Llama3 exhibit layer-specific vulnerabilities (Mistral layer 12: r=0.679, mean harmfulness 8.0/10; Llama3 layer 16: r=0.626, mean 6.1). Activation steering thus serves dual purpose—both monitoring therapeutic quality in deployment and auditing safety landscapes during pre-deployment evaluation.
 
 As AI systems assume expanding roles in mental health support, technical mechanisms for ensuring persona consistency become increasingly critical. The monitoring framework demonstrated here—combining validated steering vectors with statistical process control—represents a promising component of the governance infrastructure such deployment requires.
 
