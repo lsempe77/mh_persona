@@ -1,0 +1,57 @@
+{
+  "key_finding": "Instruction Tuning Firewall",
+  "description": "Activation steering produces strong, graded changes in internal model representations (mean r=0.596 across 24 model-trait pairs) but text-level linguistic analysis detects effects only 2.9x weaker (mean |r|=0.203). This demonstrates that instruction-tuned models can harbour shifted personas while producing text that appears clinically appropriate \u2014 the 'instruction tuning firewall'. This finding provides the strongest argument for activation-based monitoring: text analysis gives a false sense of safety.",
+  "secondary_findings": [
+    {
+      "finding": "Trait-specific text signatures exist but are weak",
+      "detail": "Only 18% of trait\u00d7feature dose-response relationships reach p<0.05"
+    },
+    {
+      "finding": "Most steerable traits by text features",
+      "detail": "uncritical_validation (best text r) and emotional_over_involvement show the most detectable text-level changes"
+    },
+    {
+      "finding": "Cross-model consistency in steerability",
+      "detail": "Qwen2 shows lowest semantic drift (most resistant to steering); Mistral shows highest"
+    },
+    {
+      "finding": "Safety-critical finding",
+      "detail": "Qwen2 maintains crisis referrals across all steering conditions; Llama3 and Mistral show gaps"
+    }
+  ],
+  "per_trait_best_text_features": {
+    "abandonment_of_therapeutic_frame": {
+      "r": -0.093,
+      "feature": "vader_compound"
+    },
+    "boundary_maintenance": {
+      "r": 0.198,
+      "feature": "char_length"
+    },
+    "crisis_recognition": {
+      "r": 0.189,
+      "feature": "has_list"
+    },
+    "emotional_over_involvement": {
+      "r": -0.3,
+      "feature": "has_list"
+    },
+    "empathetic_responsiveness": {
+      "r": 0.184,
+      "feature": "char_length"
+    },
+    "non_judgmental_acceptance": {
+      "r": -0.128,
+      "feature": "safety_referrals"
+    },
+    "sycophancy_harmful_validation": {
+      "r": -0.195,
+      "feature": "has_list"
+    },
+    "uncritical_validation": {
+      "r": -0.335,
+      "feature": "hedges"
+    }
+  },
+  "activation_vs_text_ratio": 2.9
+}
