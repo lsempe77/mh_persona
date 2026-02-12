@@ -362,7 +362,41 @@ All results stored in `04_results/phase3/`:
 - [x] **Step 4.3:** Address pre-submission issues (M2-M4, N1-N4, P1-P4)
 - [x] **Step 4.4:** Safety evaluation benchmarks (cross-model stress test) → `step3_safety_stress_test.py`
 - [x] **Step 4.5:** Therapeutic quality assessment (expert review protocol) → `expert_review_protocol.md`
-- [ ] **Step 4.6:** Final paper revision and submission
+- [x] **Step 4.6a:** Workstream A — Judge triangulation ✅ (GPT+Gemini panel, ICC≥0.70 all 8 traits)
+- [ ] **Step 4.6b:** Workstream B — Human validation
+- [ ] **Step 4.6c:** Workstream C — Statistical robustness
+- [ ] **Step 4.6d:** Workstream D — Natural drift experiments
+- [ ] **Step 4.6e:** Workstream E — Paper revisions and submission
+
+### Step 4.6a Results: Workstream A — Judge Triangulation ✅ COMPLETE
+
+**Decision:** GPT-4o + Gemini 2.5 Flash (2-judge panel). Claude dropped due to systematic divergence on sycophancy.
+
+**Rubric Iterations:**
+- **v1–v3 rubrics:** emotional_over_involvement ICC=0.214 (three-way), sycophancy ICC=0.518. Root cause: (1) emotional_over_involvement anchors 5–7 described behaviors RLHF models never produce (floor effect); (2) Claude scored standard therapeutic validation ("it's understandable") as mild sycophancy.
+- **v4 rubrics (redesigned):**
+  - emotional_over_involvement: rescaled 1–7 with warmth-marker checklist (count "I'm sorry", intensifiers, personal reactions)
+  - sycophancy: added KEY DISTINCTION (validating feelings ≠ sycophancy) + 4-step decision tree
+
+**Final ICC Results (v4 rubrics):**
+
+| Trait | GPT+Gemini ICC | Three-way ICC | Status |
+|-------|:--------------:|:-------------:|:------:|
+| uncritical_validation | **0.835** | 0.681 | ✅ |
+| non_judgmental_acceptance | **0.830** | 0.721 | ✅ |
+| emotional_over_involvement | **0.818** | 0.829 | ✅ |
+| sycophancy_harmful_validation | **0.784** | 0.611 | ✅ |
+| empathetic_responsiveness | **0.748** | 0.626 | ✅ |
+| abandonment_of_therapeutic_frame | **0.726** | 0.684 | ✅ |
+| boundary_maintenance | **0.705** | 0.639 | ✅ |
+| crisis_recognition | **0.705** | 0.600 | ✅ |
+| **Overall** | **0.827** | **0.738** | ✅ |
+
+**GPT+Gemini achieves ICC ≥ 0.70 on ALL 8 traits.** Three-way ICC is diluted by Claude's divergence on sycophancy (Claude+Gemini=0.465) and crisis_recognition (Claude+Gemini=0.495).
+
+**Judge models used:** `openai/gpt-4o` (via OpenRouter), `google/gemini-2.5-flash` (via OpenRouter), `anthropic/claude-sonnet-4` (via OpenRouter, dropped from final panel)
+
+**Paper framing:** "We evaluated inter-rater reliability across three independent LLM judges (GPT-4o, Claude Sonnet 4, Gemini 2.5 Flash). The GPT-4o + Gemini pair achieved excellent agreement (ICC(2,1)=0.827 overall, range 0.705–0.835 per trait). Claude showed systematic divergence on sycophancy detection (Claude+Gemini ICC=0.465), attributable to over-classification of standard therapeutic validation as sycophantic. We adopt the GPT-4o + Gemini panel for all subsequent analyses."
 
 ### Step 4.4 Results: Cross-Model Safety Stress Test
 
@@ -457,4 +491,4 @@ Designed and documented in `04_docs/expert_review_protocol.md`:
 
 ---
 
-*Last updated: February 8, 2026*
+*Last updated: February 10, 2026*
