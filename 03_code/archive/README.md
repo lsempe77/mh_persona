@@ -40,9 +40,22 @@ Earlier implementations superseded by current pipeline:
 - `step1b_contrastive_probing.py`
 - `step2_monitor_drift.py`
 
-## What Was Removed
+## Archived Scripts (Feb 2026)
 
-The following unused files were removed (Feb 2026):
+**From `03_code/` main folder:**
+- `generate_steered_examples.py` - One-off example generation
+- `download_and_analyze_corpus.py` - One-off corpus download
+- `analyze_all_results.py` - Superseded aggregation script
+- `modal_context_erosion.py` - Superseded by `modal_context_erosion_v2.py`
+- `generate_steered_corpus.py` - Superseded by `generate_steered_corpus_v2.py`
+- `generate_steered_corpus_v3_patch.py` - One-off patch script
+
+**From `03_code/results/`:**
+- `check_erosion.py`, `check_session.py` - Debug scripts
+- `gather_all_results.py` - One-off aggregation
+- `inspect_8bit.py`, `quant_for_paper.py` - One-off analysis
+
+## What Was Removed (Deleted)
 
 **From `old_analysis/`:**
 - `analyze_v16.py`, `analyze_v8.py` - Version-specific analysis
