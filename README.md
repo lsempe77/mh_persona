@@ -62,7 +62,6 @@ All 24 model×trait combinations: r > 0.3, all p < 0.0001.
 │
 ├── 01_literature/                 # Papers & reading notes
 ├── 02_data/                       # Datasets (gitignored)
-├── 05_outputs/                    # Blog posts, presentations
 └── archive/                       # Old versions of everything
 ```
 
