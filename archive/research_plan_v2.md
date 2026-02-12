@@ -33,7 +33,7 @@ Build a **real-time monitoring system** that detects when a chatbot is about to 
 | **Phase 3:** Stabilization | ⏳ Not started | Intervention toolkit |
 | **Phase 4:** Evaluation | ⏳ Not started | Benchmarks & paper |
 
-**See [04_docs/research_document_activation_steering_v2.md](04_docs/research_document_activation_steering_v2.md) for the full research paper draft.**
+**See [05_docs/research_document_activation_steering_v2.md](05_docs/research_document_activation_steering_v2.md) for the full research paper draft.**
 
 ---
 
@@ -340,7 +340,7 @@ Month 10-12[░░░░░░░░░░░░] Phase 4: Evaluation & Publicat
 - **Analysis script (V29):** `03_code/modal_steering_v29_improved_traits.py`
 - **Analysis script (V28):** `03_code/modal_steering_v28_anchor_cosine.py`
 - **Results JSON:** Modal volume `/results/` (V28 + V29 results)
-- **Paper draft:** `04_docs/research_document_activation_steering_v2.pdf`
+- **Paper draft:** `05_docs/research_document_activation_steering_v2.pdf`
 
 ### V29 Key Improvement
 - **`grounded_calmness` → `measured_pacing`:** Abstract prompts failed (r≈0). Behavioral pace/urgency prompts fixed it (r=0.677).
@@ -419,7 +419,7 @@ best_layer = max(layers, key=lambda l: pearsonr(coefficients, judge_scores)[0])
 
 ## Related Documents
 
-- **[04_docs/research_document_activation_steering_v2.pdf](04_docs/research_document_activation_steering_v2.pdf)** — Full research paper draft (Lancet style)
+- **[05_docs/research_document_activation_steering_v2.pdf](05_docs/research_document_activation_steering_v2.pdf)** — Full research paper draft (Lancet style)
 - **[03_code/modal_steering_v23_targeted_fixes.py](03_code/modal_steering_v23_targeted_fixes.py)** — Final analysis script
 - **[.github/copilot-instructions.md](.github/copilot-instructions.md)** — Technical methodology reference
 

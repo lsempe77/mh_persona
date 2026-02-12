@@ -52,13 +52,13 @@ All 24 model×trait combinations: r > 0.3, all p < 0.0001.
 │   ├── analyze_results.py         # Cross-model analysis
 │   └── archive/                   # Old script versions (v5-v29)
 │
-├── 04_docs/                       # Paper
-│   └── research_document_activation_steering_v3.md  # Lancet-style paper
-│
 ├── 04_results/                    # Results & design docs
 │   ├── phase3_monitoring_design.md    # Phase 3 design spec
 │   ├── phase2_root_cause_analysis.md  # Phase 2b analysis
 │   └── phase3/                    # Monitoring outputs (36 JSONs + 21 PNGs)
+│
+├── 05_docs/                       # Paper & protocols
+│   └── research_document_activation_steering_v3.md  # Lancet-style paper
 │
 ├── 01_literature/                 # Papers & reading notes
 ├── 02_data/                       # Datasets (gitignored)
@@ -83,7 +83,7 @@ All 24 model×trait combinations: r > 0.3, all p < 0.0001.
 | Document | What |
 |----------|------|
 | [PROJECT_STATUS.md](PROJECT_STATUS.md) | Full roadmap, results tables, checklist |
-| [04_docs/research_document_activation_steering_v3.md](04_docs/research_document_activation_steering_v3.md) | Research paper (Lancet-style) |
+| [05_docs/research_document_activation_steering_v3.md](05_docs/research_document_activation_steering_v3.md) | Research paper (Lancet-style) |
 | [04_results/phase3_monitoring_design.md](04_results/phase3_monitoring_design.md) | Phase 3 technical design |
 | [.github/copilot-instructions.md](.github/copilot-instructions.md) | Technical lessons & pitfalls |
 

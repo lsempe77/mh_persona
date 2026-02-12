@@ -71,7 +71,7 @@ This plan addresses **13 weaknesses** across four workstreams. The goal is to tr
 > **Problem:** No human ground truth. Lancet requires human-in-the-loop validation for any clinical AI claim.
 
 ### B1. Validation Protocol
-- **Document:** `04_docs/human_validation/protocol.md`
+- **Document:** `05_docs/human_validation/protocol.md`
 - **Contents:**
   - **Rater recruitment:** 6–8 raters with clinical psychology background (graduate level minimum). Bilingual EN/ES.
   - **Rating scale:** 1–7 per trait, with anchored descriptors matching the GPT-4o-mini rubrics exactly
@@ -89,9 +89,9 @@ This plan addresses **13 weaknesses** across four workstreams. The goal is to tr
   - Each response randomly selected from the 10 scenarios available in that cell
   - 20% overlap between rater pairs (for inter-rater reliability)
 - **Output:**
-  - `04_docs/human_validation/rating_sheet_EN.csv` — English version
-  - `04_docs/human_validation/rating_sheet_ES.csv` — Spanish version (scenario context translated)
-  - `04_docs/human_validation/response_key.json` — maps response IDs back to model/trait/coefficient (hidden from raters)
+  - `05_docs/human_validation/rating_sheet_EN.csv` — English version
+  - `05_docs/human_validation/rating_sheet_ES.csv` — Spanish version (scenario context translated)
+  - `05_docs/human_validation/response_key.json` — maps response IDs back to model/trait/coefficient (hidden from raters)
 
 ### B3. Human Validation Analysis
 - **Script:** `03_code/analyze_human_validation.py`
@@ -271,7 +271,7 @@ _Manual step — distribute rating sheets and wait._
 | Step | Task | Depends on | Time |
 |------|------|------------|------|
 | **3a** | Distribute `rating_sheet_EN.csv` + `rating_sheet_ES.csv` to 6–8 raters | 2d | 1 week |
-| **3b** | Collect completed ratings into `04_docs/human_validation/completed_ratings/` | 3a | — |
+| **3b** | Collect completed ratings into `05_docs/human_validation/completed_ratings/` | 3a | — |
 
 ### 🔴 PHASE 4: Final Analysis (after Phase 3)
 
@@ -406,9 +406,9 @@ python analyze_human_validation.py         # 4a
 - [x] `03_code/modal_adversarial_redteam.py` ✅ Built
 
 ### Documents (3)
-- [x] `04_docs/human_validation/protocol.md` ✅ Built (656 lines, bilingual EN/ES)
-- [ ] `04_docs/human_validation/rating_sheet_EN.csv` ☐ **TO BUILD** (via build_human_validation_set.py)
-- [ ] `04_docs/human_validation/rating_sheet_ES.csv` ☐ **TO BUILD** (via build_human_validation_set.py)
+- [x] `05_docs/human_validation/protocol.md` ✅ Built (656 lines, bilingual EN/ES)
+- [ ] `05_docs/human_validation/rating_sheet_EN.csv` ☐ **TO BUILD** (via build_human_validation_set.py)
+- [ ] `05_docs/human_validation/rating_sheet_ES.csv` ☐ **TO BUILD** (via build_human_validation_set.py)
 
 ### Paper Edits (7)
 - [ ] E1: Threat model (§1.1)

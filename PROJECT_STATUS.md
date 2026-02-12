@@ -430,7 +430,7 @@ All results stored in `04_results/phase3/`:
 
 ### Step 4.5: Expert Review Protocol
 
-Designed and documented in `04_docs/expert_review_protocol.md`:
+Designed and documented in `05_docs/expert_review_protocol.md`:
 - Stratified sampling: 30 sessions/model (true_alert, watch_only, clean, high_drift_clean)
 - Reviewer panel: ≥3 licensed clinicians, blinded to alert status
 - Rating instrument: 8 dimensions, 7-point Likert scale
@@ -449,11 +449,11 @@ Designed and documented in `04_docs/expert_review_protocol.md`:
 | `03_code/analyze_results.py` | Cross-model comparison (template vs probe) |
 | `04_results/phase3_monitoring_design.md` | Phase 3 design document |
 | `04_results/phase3/` | **All Phase 3 outputs** (36 JSONs + 21 PNGs) |
-| `04_docs/research_document_activation_steering_v2.md` | Full Lancet-style research paper |
-| `04_docs/research_document_activation_steering_v3.md` | **Current paper** (v3 with cross-model safety) |
+| `05_docs/research_document_activation_steering_v2.md` | Full Lancet-style research paper |
+| `05_docs/research_document_activation_steering_v3.md` | **Current paper** (v3 with cross-model safety) |
 | `03_code/step3_safety_stress_test.py` | Cross-model safety stress test (Phase 4.4) |
 | `03_code/step4_select_review_sessions.py` | Expert review session selection (Phase 4.5) |
-| `04_docs/expert_review_protocol.md` | Clinical expert review protocol |
+| `05_docs/expert_review_protocol.md` | Clinical expert review protocol |
 | `03_code/safety_stress_test_results.json` | Safety stress test results (all 3 models) |
 | `03_code/trait_definitions.json` | Trait prompts (template-based) |
 | `03_code/trait_layer_matrix_{model}.json` | Template validation results per model |

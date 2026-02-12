@@ -10,7 +10,7 @@ This folder contains historical files preserved for reproducibility and referenc
 |------|---------|--------|
 | `STEERING_LESSONS_LEARNED.md` | Technical lessons from steering iterations | Referenced in `03_code/README.md` |
 | `research_document_activation_steering_v2.md` | Earlier paper draft (v3+ is current) | Historical |
-| `research_plan_v2.md` | Original research planning document | Superseded by `04_docs/workplan2.0.md` |
+| `research_plan_v2.md` | Original research planning document | Superseded by `05_docs/workplan2.0.md` |
 | `mental_health_datasets_for_drift_testing.md` | Dataset reference notes | Historical |
 | `validation_datasets_reference.md` | Dataset reference notes | Historical |
 | `phase2c_deep_research_synthesis.md` | Root cause analysis synthesis | Referenced in `04_results/` |
