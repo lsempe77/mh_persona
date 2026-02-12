@@ -1,0 +1,205 @@
+{
+  "experiment": "power_analysis",
+  "version": "v1",
+  "parameters": {
+    "alpha": 0.05,
+    "power_target": 0.8,
+    "n_small": 30,
+    "n_large": 100
+  },
+  "minimum_detectable_effects": {
+    "n_30": {
+      "n": 30,
+      "label": "N=30 (v1)",
+      "min_r": 0.4924,
+      "min_r_squared": 0.2424
+    },
+    "n_100": {
+      "n": 100,
+      "label": "N=100 (v2)",
+      "min_r": 0.277,
+      "min_r_squared": 0.0767
+    }
+  },
+  "sample_size_requirements": {},
+  "power_at_observed_effects": {},
+  "text_feature_analysis": {
+    "tfidf_drift": {
+      "observed_r": 0.281,
+      "power_n30": 0.3232,
+      "power_n100": 0.8117,
+      "n_needed_80pct": 98,
+      "detectable_n30": false,
+      "detectable_n100": true
+    },
+    "vader_compound": {
+      "observed_r": 0.203,
+      "power_n30": 0.1879,
+      "power_n100": 0.5269,
+      "n_needed_80pct": 189,
+      "detectable_n30": false,
+      "detectable_n100": false
+    },
+    "textblob_subjectivity": {
+      "observed_r": 0.171,
+      "power_n30": 0.1461,
+      "power_n100": 0.3979,
+      "n_needed_80pct": 267,
+      "detectable_n30": false,
+      "detectable_n100": false
+    },
+    "question_ratio": {
+      "observed_r": 0.154,
+      "power_n30": 0.1272,
+      "power_n100": 0.3334,
+      "n_needed_80pct": 329,
+      "detectable_n30": false,
+      "detectable_n100": false
+    },
+    "word_count": {
+      "observed_r": 0.089,
+      "power_n30": 0.075,
+      "power_n100": 0.1421,
+      "n_needed_80pct": 989,
+      "detectable_n30": false,
+      "detectable_n100": false
+    },
+    "flesch_reading_ease": {
+      "observed_r": 0.062,
+      "power_n30": 0.062,
+      "power_n100": 0.0938,
+      "n_needed_80pct": 2040,
+      "detectable_n30": false,
+      "detectable_n100": false
+    },
+    "avg_sentence_length": {
+      "observed_r": 0.045,
+      "power_n30": 0.0563,
+      "power_n100": 0.0728,
+      "n_needed_80pct": 3874,
+      "detectable_n30": false,
+      "detectable_n100": false
+    }
+  },
+  "activation_analysis": {
+    "empathetic_responsiveness": {
+      "observed_r": 0.732,
+      "power_n30": 0.9981,
+      "power_n100": 1.0,
+      "n_needed_80pct": 13
+    },
+    "non_judgmental_acceptance": {
+      "observed_r": 0.589,
+      "power_n30": 0.9398,
+      "power_n100": 1.0,
+      "n_needed_80pct": 21
+    },
+    "emotional_over_involvement": {
+      "observed_r": 0.445,
+      "power_n30": 0.7006,
+      "power_n100": 0.997,
+      "n_needed_80pct": 38
+    },
+    "boundary_maintenance": {
+      "observed_r": 0.411,
+      "power_n30": 0.6217,
+      "power_n100": 0.9904,
+      "n_needed_80pct": 45
+    },
+    "abandonment_of_therapeutic_frame": {
+      "observed_r": 0.387,
+      "power_n30": 0.5642,
+      "power_n100": 0.9803,
+      "n_needed_80pct": 51
+    },
+    "uncritical_validation": {
+      "observed_r": 0.324,
+      "power_n30": 0.4156,
+      "power_n100": 0.9115,
+      "n_needed_80pct": 73
+    },
+    "crisis_recognition": {
+      "observed_r": 0.298,
+      "power_n30": 0.3585,
+      "power_n100": 0.857,
+      "n_needed_80pct": 87
+    },
+    "sycophancy_harmful_validation": {
+      "observed_r": 0.258,
+      "power_n30": 0.2786,
+      "power_n100": 0.7388,
+      "n_needed_80pct": 116
+    }
+  },
+  "significance_rate_interpretation": {
+    "observed_sig_rate_text_pct": 18.0,
+    "mean_text_effect_r": 0.1436,
+    "mean_activation_r": 0.4305,
+    "expected_detectable_text_n30_pct": 0.0,
+    "expected_detectable_text_n100_pct": 14.3,
+    "expected_detectable_act_n30_pct": 25.0,
+    "expected_detectable_act_n100_pct": 87.5,
+    "mde_n30": 0.4924,
+    "mde_n100": 0.277,
+    "interpretation": "At N=30, the design has 80% power to detect r\u22650.492. The observed 18% significance rate for text features (mean |r|=0.144) is consistent with a mix of real effects below the detection threshold and true nulls. At N=100, the MDE drops to r\u22650.277, which should resolve whether the non-significant text features represent real but small effects or true nulls.",
+    "activation_gap_statement": "Activation-level effects (mean r=0.430) are 3.0\u00d7 larger than text-level effects (mean |r|=0.144). Even at N=30, activation effects are well-powered (expected detection rate: 25%), while text effects are underpowered (expected detection rate: 0%)."
+  },
+  "per_trait_power": [
+    {
+      "trait": "empathetic_responsiveness",
+      "r": 0.732,
+      "power_n30": 0.9981,
+      "power_n100": 1.0,
+      "n_needed": 13
+    },
+    {
+      "trait": "non_judgmental_acceptance",
+      "r": 0.589,
+      "power_n30": 0.9398,
+      "power_n100": 1.0,
+      "n_needed": 21
+    },
+    {
+      "trait": "boundary_maintenance",
+      "r": 0.411,
+      "power_n30": 0.6217,
+      "power_n100": 0.9904,
+      "n_needed": 45
+    },
+    {
+      "trait": "crisis_recognition",
+      "r": 0.298,
+      "power_n30": 0.3585,
+      "power_n100": 0.857,
+      "n_needed": 87
+    },
+    {
+      "trait": "emotional_over_involvement",
+      "r": 0.445,
+      "power_n30": 0.7006,
+      "power_n100": 0.997,
+      "n_needed": 38
+    },
+    {
+      "trait": "abandonment_of_therapeutic_frame",
+      "r": 0.387,
+      "power_n30": 0.5642,
+      "power_n100": 0.9803,
+      "n_needed": 51
+    },
+    {
+      "trait": "uncritical_validation",
+      "r": 0.324,
+      "power_n30": 0.4156,
+      "power_n100": 0.9115,
+      "n_needed": 73
+    },
+    {
+      "trait": "sycophancy_harmful_validation",
+      "r": 0.258,
+      "power_n30": 0.2786,
+      "power_n100": 0.7388,
+      "n_needed": 116
+    }
+  ]
+}

@@ -1,0 +1,514 @@
+{
+  "metadata": {
+    "analysis": "Inter-Judge Agreement (Workstream A3)",
+    "judges": [
+      "gpt4o_mini",
+      "claude",
+      "gemini"
+    ],
+    "n_traits": 8,
+    "traits": [
+      "empathetic_responsiveness",
+      "non_judgmental_acceptance",
+      "boundary_maintenance",
+      "crisis_recognition",
+      "emotional_over_involvement",
+      "abandonment_of_therapeutic_frame",
+      "uncritical_validation",
+      "sycophancy_harmful_validation"
+    ],
+    "n_responses": 1200,
+    "icc_type": "ICC(2,1) \u2014 two-way random, single measures"
+  },
+  "judge_descriptives": {
+    "gpt4o_mini": {
+      "display_name": "GPT-4o-mini",
+      "n_scores": 1200,
+      "mean": 3.408,
+      "std": 1.455,
+      "median": 3.0,
+      "min": 1.0,
+      "max": 7.0
+    },
+    "claude": {
+      "display_name": "Claude 3.5 Sonnet",
+      "n_scores": 1200,
+      "mean": 3.165,
+      "std": 1.274,
+      "median": 3.0,
+      "min": 1.0,
+      "max": 7.0
+    },
+    "gemini": {
+      "display_name": "Gemini 1.5 Pro",
+      "n_scores": 1200,
+      "mean": 3.126,
+      "std": 1.601,
+      "median": 3.0,
+      "min": 1.0,
+      "max": 7.0
+    }
+  },
+  "icc_results": {
+    "gpt4o_mini_vs_claude": {
+      "overall": {
+        "icc": 0.7058,
+        "ci95_lower": 0.66,
+        "ci95_upper": 0.74,
+        "f_stat": 6.0607,
+        "p_value": 0.0,
+        "n": 1200,
+        "interpretation": "good"
+      },
+      "empathetic_responsiveness": {
+        "icc": 0.4973,
+        "ci95_lower": -0.06,
+        "ci95_upper": 0.76,
+        "f_stat": 5.8277,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "fair"
+      },
+      "non_judgmental_acceptance": {
+        "icc": 0.65,
+        "ci95_lower": -0.02,
+        "ci95_upper": 0.86,
+        "f_stat": 10.4748,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "boundary_maintenance": {
+        "icc": 0.6792,
+        "ci95_lower": 0.54,
+        "ci95_upper": 0.77,
+        "f_stat": 5.8467,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "crisis_recognition": {
+        "icc": 0.6395,
+        "ci95_lower": 0.13,
+        "ci95_upper": 0.83,
+        "f_stat": 7.5747,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "emotional_over_involvement": {
+        "icc": 0.8846,
+        "ci95_lower": 0.84,
+        "ci95_upper": 0.92,
+        "f_stat": 16.5369,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "excellent"
+      },
+      "abandonment_of_therapeutic_frame": {
+        "icc": 0.6603,
+        "ci95_lower": 0.31,
+        "ci95_upper": 0.81,
+        "f_stat": 6.8666,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "uncritical_validation": {
+        "icc": 0.6009,
+        "ci95_lower": 0.49,
+        "ci95_upper": 0.69,
+        "f_stat": 4.1032,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "sycophancy_harmful_validation": {
+        "icc": 0.5425,
+        "ci95_lower": 0.4,
+        "ci95_upper": 0.65,
+        "f_stat": 3.5963,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "fair"
+      }
+    },
+    "gpt4o_mini_vs_gemini": {
+      "overall": {
+        "icc": 0.8273,
+        "ci95_lower": 0.78,
+        "ci95_upper": 0.86,
+        "f_stat": 11.5949,
+        "p_value": 0.0,
+        "n": 1200,
+        "interpretation": "excellent"
+      },
+      "empathetic_responsiveness": {
+        "icc": 0.7477,
+        "ci95_lower": 0.26,
+        "ci95_upper": 0.89,
+        "f_stat": 11.7481,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "non_judgmental_acceptance": {
+        "icc": 0.8302,
+        "ci95_lower": 0.7,
+        "ci95_upper": 0.9,
+        "f_stat": 13.0243,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "excellent"
+      },
+      "boundary_maintenance": {
+        "icc": 0.705,
+        "ci95_lower": 0.31,
+        "ci95_upper": 0.85,
+        "f_stat": 8.7304,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "crisis_recognition": {
+        "icc": 0.7048,
+        "ci95_lower": 0.57,
+        "ci95_upper": 0.79,
+        "f_stat": 6.4826,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "emotional_over_involvement": {
+        "icc": 0.818,
+        "ci95_lower": 0.42,
+        "ci95_upper": 0.92,
+        "f_stat": 16.43,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "excellent"
+      },
+      "abandonment_of_therapeutic_frame": {
+        "icc": 0.7256,
+        "ci95_lower": 0.4,
+        "ci95_upper": 0.86,
+        "f_stat": 8.9436,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "uncritical_validation": {
+        "icc": 0.8352,
+        "ci95_lower": 0.78,
+        "ci95_upper": 0.88,
+        "f_stat": 11.2119,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "excellent"
+      },
+      "sycophancy_harmful_validation": {
+        "icc": 0.7842,
+        "ci95_lower": 0.71,
+        "ci95_upper": 0.84,
+        "f_stat": 8.2393,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "excellent"
+      }
+    },
+    "claude_vs_gemini": {
+      "overall": {
+        "icc": 0.6666,
+        "ci95_lower": 0.63,
+        "ci95_upper": 0.7,
+        "f_stat": 4.9998,
+        "p_value": 0.0,
+        "n": 1200,
+        "interpretation": "good"
+      },
+      "empathetic_responsiveness": {
+        "icc": 0.6569,
+        "ci95_lower": 0.46,
+        "ci95_upper": 0.77,
+        "f_stat": 5.7665,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "non_judgmental_acceptance": {
+        "icc": 0.7017,
+        "ci95_lower": 0.4,
+        "ci95_upper": 0.83,
+        "f_stat": 7.7678,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "boundary_maintenance": {
+        "icc": 0.5523,
+        "ci95_lower": 0.0,
+        "ci95_upper": 0.79,
+        "f_stat": 6.2519,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "fair"
+      },
+      "crisis_recognition": {
+        "icc": 0.4948,
+        "ci95_lower": -0.05,
+        "ci95_upper": 0.76,
+        "f_stat": 5.6688,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "fair"
+      },
+      "emotional_over_involvement": {
+        "icc": 0.7939,
+        "ci95_lower": 0.33,
+        "ci95_upper": 0.91,
+        "f_stat": 14.9304,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "excellent"
+      },
+      "abandonment_of_therapeutic_frame": {
+        "icc": 0.6672,
+        "ci95_lower": 0.57,
+        "ci95_upper": 0.75,
+        "f_stat": 5.0014,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "uncritical_validation": {
+        "icc": 0.6,
+        "ci95_lower": 0.47,
+        "ci95_upper": 0.7,
+        "f_stat": 4.2361,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "fair"
+      },
+      "sycophancy_harmful_validation": {
+        "icc": 0.4652,
+        "ci95_lower": 0.33,
+        "ci95_upper": 0.58,
+        "f_stat": 2.8361,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "fair"
+      }
+    },
+    "three_way": {
+      "overall": {
+        "icc": 0.7383,
+        "ci95_lower": 0.71,
+        "ci95_upper": 0.76,
+        "f_stat": 9.8252,
+        "p_value": 0.0,
+        "n": 1200,
+        "interpretation": "good"
+      },
+      "empathetic_responsiveness": {
+        "icc": 0.6258,
+        "ci95_lower": 0.32,
+        "ci95_upper": 0.78,
+        "f_stat": 10.147,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "non_judgmental_acceptance": {
+        "icc": 0.7214,
+        "ci95_lower": 0.46,
+        "ci95_upper": 0.84,
+        "f_stat": 14.3886,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "boundary_maintenance": {
+        "icc": 0.6391,
+        "ci95_lower": 0.37,
+        "ci95_upper": 0.78,
+        "f_stat": 9.8703,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "crisis_recognition": {
+        "icc": 0.5998,
+        "ci95_lower": 0.29,
+        "ci95_upper": 0.76,
+        "f_stat": 9.2505,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "fair"
+      },
+      "emotional_over_involvement": {
+        "icc": 0.8291,
+        "ci95_lower": 0.67,
+        "ci95_upper": 0.9,
+        "f_stat": 23.3435,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "excellent"
+      },
+      "abandonment_of_therapeutic_frame": {
+        "icc": 0.6837,
+        "ci95_lower": 0.55,
+        "ci95_upper": 0.78,
+        "f_stat": 9.2209,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "uncritical_validation": {
+        "icc": 0.6807,
+        "ci95_lower": 0.6,
+        "ci95_upper": 0.75,
+        "f_stat": 7.6801,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      },
+      "sycophancy_harmful_validation": {
+        "icc": 0.6106,
+        "ci95_lower": 0.52,
+        "ci95_upper": 0.69,
+        "f_stat": 5.9671,
+        "p_value": 0.0,
+        "n": 150,
+        "interpretation": "good"
+      }
+    }
+  },
+  "bias_analysis": {
+    "gpt4o_mini_vs_claude": {
+      "empathetic_responsiveness": {
+        "mean_diff": 0.98,
+        "std_diff": 0.815,
+        "n": 150
+      },
+      "non_judgmental_acceptance": {
+        "mean_diff": 0.9,
+        "std_diff": 0.721,
+        "n": 150
+      },
+      "boundary_maintenance": {
+        "mean_diff": -0.433,
+        "std_diff": 1.114,
+        "n": 150
+      },
+      "crisis_recognition": {
+        "mean_diff": -0.74,
+        "std_diff": 0.798,
+        "n": 150
+      },
+      "emotional_over_involvement": {
+        "mean_diff": 0.073,
+        "std_diff": 0.519,
+        "n": 150
+      },
+      "abandonment_of_therapeutic_frame": {
+        "mean_diff": 0.687,
+        "std_diff": 0.956,
+        "n": 150
+      },
+      "uncritical_validation": {
+        "mean_diff": 0.133,
+        "std_diff": 0.692,
+        "n": 150
+      },
+      "sycophancy_harmful_validation": {
+        "mean_diff": 0.34,
+        "std_diff": 1.067,
+        "n": 150
+      }
+    },
+    "gpt4o_mini_vs_gemini": {
+      "empathetic_responsiveness": {
+        "mean_diff": 0.56,
+        "std_diff": 0.618,
+        "n": 150
+      },
+      "non_judgmental_acceptance": {
+        "mean_diff": 0.32,
+        "std_diff": 0.659,
+        "n": 150
+      },
+      "boundary_maintenance": {
+        "mean_diff": 0.9,
+        "std_diff": 1.14,
+        "n": 150
+      },
+      "crisis_recognition": {
+        "mean_diff": 0.32,
+        "std_diff": 0.814,
+        "n": 150
+      },
+      "emotional_over_involvement": {
+        "mean_diff": -0.447,
+        "std_diff": 0.525,
+        "n": 150
+      },
+      "abandonment_of_therapeutic_frame": {
+        "mean_diff": 0.607,
+        "std_diff": 0.851,
+        "n": 150
+      },
+      "uncritical_validation": {
+        "mean_diff": -0.053,
+        "std_diff": 0.446,
+        "n": 150
+      },
+      "sycophancy_harmful_validation": {
+        "mean_diff": 0.047,
+        "std_diff": 0.854,
+        "n": 150
+      }
+    },
+    "claude_vs_gemini": {
+      "empathetic_responsiveness": {
+        "mean_diff": -0.42,
+        "std_diff": 0.838,
+        "n": 150
+      },
+      "non_judgmental_acceptance": {
+        "mean_diff": -0.58,
+        "std_diff": 0.869,
+        "n": 150
+      },
+      "boundary_maintenance": {
+        "mean_diff": 1.333,
+        "std_diff": 1.251,
+        "n": 150
+      },
+      "crisis_recognition": {
+        "mean_diff": 1.06,
+        "std_diff": 0.899,
+        "n": 150
+      },
+      "emotional_over_involvement": {
+        "mean_diff": -0.52,
+        "std_diff": 0.576,
+        "n": 150
+      },
+      "abandonment_of_therapeutic_frame": {
+        "mean_diff": -0.08,
+        "std_diff": 1.201,
+        "n": 150
+      },
+      "uncritical_validation": {
+        "mean_diff": -0.187,
+        "std_diff": 0.639,
+        "n": 150
+      },
+      "sycophancy_harmful_validation": {
+        "mean_diff": -0.293,
+        "std_diff": 1.179,
+        "n": 150
+      }
+    }
+  }
+}

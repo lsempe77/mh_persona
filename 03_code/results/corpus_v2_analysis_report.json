@@ -1,0 +1,820 @@
+{
+  "experiment": "corpus_v2_text_analysis",
+  "version": "v2",
+  "corpus_stats": {
+    "n_responses": 12000,
+    "n_models": 3,
+    "n_traits": 8,
+    "n_coefficients": 5,
+    "responses_per_cell": 100
+  },
+  "dose_response": {
+    "abandonment_of_therapeutic_frame": {
+      "vader_compound": {
+        "r": -0.0641,
+        "p_value": 0.013003,
+        "n": 1500,
+        "significant": 1
+      },
+      "subjectivity": {
+        "r": 0.0804,
+        "p_value": 0.001829,
+        "n": 1500,
+        "significant": 1
+      },
+      "polarity": {
+        "r": 0.0117,
+        "p_value": 0.649989,
+        "n": 1500,
+        "significant": 0
+      },
+      "word_count": {
+        "r": 0.0731,
+        "p_value": 0.004629,
+        "n": 1500,
+        "significant": 1
+      },
+      "sentence_count": {
+        "r": -0.0487,
+        "p_value": 0.05956,
+        "n": 1500,
+        "significant": 0
+      },
+      "avg_word_length": {
+        "r": -0.0209,
+        "p_value": 0.417926,
+        "n": 1500,
+        "significant": 0
+      },
+      "avg_sentence_length": {
+        "r": 0.0699,
+        "p_value": 0.006726,
+        "n": 1500,
+        "significant": 1
+      },
+      "flesch_reading_ease": {
+        "r": 0.0033,
+        "p_value": 0.899631,
+        "n": 1500,
+        "significant": 0
+      },
+      "question_ratio": {
+        "r": 0.0175,
+        "p_value": 0.497572,
+        "n": 1500,
+        "significant": 0
+      },
+      "lexicon_high_hits": {
+        "r": 0.1745,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_low_hits": {
+        "r": -0.0082,
+        "p_value": 0.750924,
+        "n": 1500,
+        "significant": 0
+      }
+    },
+    "boundary_maintenance": {
+      "vader_compound": {
+        "r": 0.0107,
+        "p_value": 0.677903,
+        "n": 1500,
+        "significant": 0
+      },
+      "subjectivity": {
+        "r": -0.0167,
+        "p_value": 0.518411,
+        "n": 1500,
+        "significant": 0
+      },
+      "polarity": {
+        "r": 0.0135,
+        "p_value": 0.60162,
+        "n": 1500,
+        "significant": 0
+      },
+      "word_count": {
+        "r": 0.0898,
+        "p_value": 0.000494,
+        "n": 1500,
+        "significant": 1
+      },
+      "sentence_count": {
+        "r": -0.1216,
+        "p_value": 2e-06,
+        "n": 1500,
+        "significant": 1
+      },
+      "avg_word_length": {
+        "r": 0.1956,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "avg_sentence_length": {
+        "r": 0.1492,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "flesch_reading_ease": {
+        "r": -0.2583,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "question_ratio": {
+        "r": -0.1174,
+        "p_value": 5e-06,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_high_hits": {
+        "r": 0.1396,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_low_hits": {
+        "r": -0.0365,
+        "p_value": 0.157368,
+        "n": 1500,
+        "significant": 0
+      }
+    },
+    "crisis_recognition": {
+      "vader_compound": {
+        "r": -0.0013,
+        "p_value": 0.9596,
+        "n": 1500,
+        "significant": 0
+      },
+      "subjectivity": {
+        "r": 0.0288,
+        "p_value": 0.265479,
+        "n": 1500,
+        "significant": 0
+      },
+      "polarity": {
+        "r": -0.0332,
+        "p_value": 0.198617,
+        "n": 1500,
+        "significant": 0
+      },
+      "word_count": {
+        "r": 0.0848,
+        "p_value": 0.001018,
+        "n": 1500,
+        "significant": 1
+      },
+      "sentence_count": {
+        "r": -0.0806,
+        "p_value": 0.001777,
+        "n": 1500,
+        "significant": 1
+      },
+      "avg_word_length": {
+        "r": 0.069,
+        "p_value": 0.007516,
+        "n": 1500,
+        "significant": 1
+      },
+      "avg_sentence_length": {
+        "r": 0.112,
+        "p_value": 1.4e-05,
+        "n": 1500,
+        "significant": 1
+      },
+      "flesch_reading_ease": {
+        "r": -0.1208,
+        "p_value": 3e-06,
+        "n": 1500,
+        "significant": 1
+      },
+      "question_ratio": {
+        "r": -0.0422,
+        "p_value": 0.102692,
+        "n": 1500,
+        "significant": 0
+      },
+      "lexicon_high_hits": {
+        "r": 0.0505,
+        "p_value": 0.050694,
+        "n": 1500,
+        "significant": 0
+      },
+      "lexicon_low_hits": {
+        "r": 0.0196,
+        "p_value": 0.447572,
+        "n": 1500,
+        "significant": 0
+      }
+    },
+    "emotional_over_involvement": {
+      "vader_compound": {
+        "r": 0.0812,
+        "p_value": 0.001644,
+        "n": 1500,
+        "significant": 1
+      },
+      "subjectivity": {
+        "r": 0.123,
+        "p_value": 2e-06,
+        "n": 1500,
+        "significant": 1
+      },
+      "polarity": {
+        "r": 0.0121,
+        "p_value": 0.639407,
+        "n": 1500,
+        "significant": 0
+      },
+      "word_count": {
+        "r": 0.1009,
+        "p_value": 9e-05,
+        "n": 1500,
+        "significant": 1
+      },
+      "sentence_count": {
+        "r": -0.1439,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "avg_word_length": {
+        "r": -0.2324,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "avg_sentence_length": {
+        "r": 0.196,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "flesch_reading_ease": {
+        "r": 0.2047,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "question_ratio": {
+        "r": -0.1342,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_high_hits": {
+        "r": 0.0,
+        "p_value": 1.0,
+        "n": 1500
+      },
+      "lexicon_low_hits": {
+        "r": 0.1608,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      }
+    },
+    "empathetic_responsiveness": {
+      "vader_compound": {
+        "r": 0.036,
+        "p_value": 0.163964,
+        "n": 1500,
+        "significant": 0
+      },
+      "subjectivity": {
+        "r": 0.0292,
+        "p_value": 0.258806,
+        "n": 1500,
+        "significant": 0
+      },
+      "polarity": {
+        "r": -0.0973,
+        "p_value": 0.00016,
+        "n": 1500,
+        "significant": 1
+      },
+      "word_count": {
+        "r": 0.1187,
+        "p_value": 4e-06,
+        "n": 1500,
+        "significant": 1
+      },
+      "sentence_count": {
+        "r": 0.1013,
+        "p_value": 8.5e-05,
+        "n": 1500,
+        "significant": 1
+      },
+      "avg_word_length": {
+        "r": 0.0218,
+        "p_value": 0.399017,
+        "n": 1500,
+        "significant": 0
+      },
+      "avg_sentence_length": {
+        "r": -0.103,
+        "p_value": 6.4e-05,
+        "n": 1500,
+        "significant": 1
+      },
+      "flesch_reading_ease": {
+        "r": 0.059,
+        "p_value": 0.022328,
+        "n": 1500,
+        "significant": 1
+      },
+      "question_ratio": {
+        "r": -0.1631,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_high_hits": {
+        "r": 0.1863,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_low_hits": {
+        "r": 0.1566,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      }
+    },
+    "non_judgmental_acceptance": {
+      "vader_compound": {
+        "r": 0.0713,
+        "p_value": 0.005728,
+        "n": 1500,
+        "significant": 1
+      },
+      "subjectivity": {
+        "r": 0.0166,
+        "p_value": 0.521086,
+        "n": 1500,
+        "significant": 0
+      },
+      "polarity": {
+        "r": 0.1219,
+        "p_value": 2e-06,
+        "n": 1500,
+        "significant": 1
+      },
+      "word_count": {
+        "r": -0.0153,
+        "p_value": 0.554152,
+        "n": 1500,
+        "significant": 0
+      },
+      "sentence_count": {
+        "r": 0.0399,
+        "p_value": 0.122901,
+        "n": 1500,
+        "significant": 0
+      },
+      "avg_word_length": {
+        "r": 0.0027,
+        "p_value": 0.918021,
+        "n": 1500,
+        "significant": 0
+      },
+      "avg_sentence_length": {
+        "r": -0.0537,
+        "p_value": 0.037577,
+        "n": 1500,
+        "significant": 1
+      },
+      "flesch_reading_ease": {
+        "r": 0.0477,
+        "p_value": 0.064636,
+        "n": 1500,
+        "significant": 0
+      },
+      "question_ratio": {
+        "r": 0.0078,
+        "p_value": 0.763154,
+        "n": 1500,
+        "significant": 0
+      },
+      "lexicon_high_hits": {
+        "r": 0.1511,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_low_hits": {
+        "r": -0.033,
+        "p_value": 0.202147,
+        "n": 1500,
+        "significant": 0
+      }
+    },
+    "sycophancy_harmful_validation": {
+      "vader_compound": {
+        "r": 0.0498,
+        "p_value": 0.053917,
+        "n": 1500,
+        "significant": 0
+      },
+      "subjectivity": {
+        "r": 0.0088,
+        "p_value": 0.733506,
+        "n": 1500,
+        "significant": 0
+      },
+      "polarity": {
+        "r": 0.0256,
+        "p_value": 0.322148,
+        "n": 1500,
+        "significant": 0
+      },
+      "word_count": {
+        "r": 0.0477,
+        "p_value": 0.065028,
+        "n": 1500,
+        "significant": 0
+      },
+      "sentence_count": {
+        "r": 0.0058,
+        "p_value": 0.822119,
+        "n": 1500,
+        "significant": 0
+      },
+      "avg_word_length": {
+        "r": -0.0341,
+        "p_value": 0.187167,
+        "n": 1500,
+        "significant": 0
+      },
+      "avg_sentence_length": {
+        "r": 0.0083,
+        "p_value": 0.747414,
+        "n": 1500,
+        "significant": 0
+      },
+      "flesch_reading_ease": {
+        "r": 0.0473,
+        "p_value": 0.066864,
+        "n": 1500,
+        "significant": 0
+      },
+      "question_ratio": {
+        "r": -0.0993,
+        "p_value": 0.000118,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_high_hits": {
+        "r": -0.0223,
+        "p_value": 0.387453,
+        "n": 1500,
+        "significant": 0
+      },
+      "lexicon_low_hits": {
+        "r": -0.0413,
+        "p_value": 0.109617,
+        "n": 1500,
+        "significant": 0
+      }
+    },
+    "uncritical_validation": {
+      "vader_compound": {
+        "r": 0.0686,
+        "p_value": 0.007901,
+        "n": 1500,
+        "significant": 1
+      },
+      "subjectivity": {
+        "r": 0.1316,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "polarity": {
+        "r": 0.0392,
+        "p_value": 0.129118,
+        "n": 1500,
+        "significant": 0
+      },
+      "word_count": {
+        "r": 0.0822,
+        "p_value": 0.001437,
+        "n": 1500,
+        "significant": 1
+      },
+      "sentence_count": {
+        "r": -0.0347,
+        "p_value": 0.179693,
+        "n": 1500,
+        "significant": 0
+      },
+      "avg_word_length": {
+        "r": -0.1576,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "avg_sentence_length": {
+        "r": 0.0663,
+        "p_value": 0.010162,
+        "n": 1500,
+        "significant": 1
+      },
+      "flesch_reading_ease": {
+        "r": 0.1738,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "question_ratio": {
+        "r": -0.2342,
+        "p_value": 0.0,
+        "n": 1500,
+        "significant": 1
+      },
+      "lexicon_high_hits": {
+        "r": -0.0065,
+        "p_value": 0.802229,
+        "n": 1500,
+        "significant": 0
+      },
+      "lexicon_low_hits": {
+        "r": -0.0346,
+        "p_value": 0.180273,
+        "n": 1500,
+        "significant": 0
+      }
+    }
+  },
+  "semantic_drift": {
+    "abandonment_of_therapeutic_frame": {
+      "llama3": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "mistral": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "qwen2": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      }
+    },
+    "boundary_maintenance": {
+      "llama3": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "mistral": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "qwen2": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      }
+    },
+    "crisis_recognition": {
+      "llama3": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "mistral": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "qwen2": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      }
+    },
+    "emotional_over_involvement": {
+      "llama3": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "mistral": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "qwen2": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      }
+    },
+    "empathetic_responsiveness": {
+      "llama3": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "mistral": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "qwen2": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      }
+    },
+    "non_judgmental_acceptance": {
+      "llama3": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "mistral": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "qwen2": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      }
+    },
+    "sycophancy_harmful_validation": {
+      "llama3": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "mistral": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "qwen2": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      }
+    },
+    "uncritical_validation": {
+      "llama3": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "mistral": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      },
+      "qwen2": {
+        "-3.0": 0.0,
+        "-1.5": 0.0,
+        "0.0": 0.0,
+        "1.5": 0.0,
+        "3.0": 0.0
+      }
+    }
+  },
+  "gap_analysis": {
+    "abandonment_of_therapeutic_frame": {
+      "activation_r": 0.387,
+      "mean_text_abs_r": 0.0602,
+      "gap_ratio": 6.43,
+      "text_features_significant": 4,
+      "text_features_total": 7,
+      "text_sig_pct": 57.1
+    },
+    "boundary_maintenance": {
+      "activation_r": 0.411,
+      "mean_text_abs_r": 0.0956,
+      "gap_ratio": 4.3,
+      "text_features_significant": 4,
+      "text_features_total": 7,
+      "text_sig_pct": 57.1
+    },
+    "crisis_recognition": {
+      "activation_r": 0.298,
+      "mean_text_abs_r": 0.0497,
+      "gap_ratio": 5.99,
+      "text_features_significant": 2,
+      "text_features_total": 7,
+      "text_sig_pct": 28.6
+    },
+    "emotional_over_involvement": {
+      "activation_r": 0.445,
+      "mean_text_abs_r": 0.115,
+      "gap_ratio": 3.87,
+      "text_features_significant": 6,
+      "text_features_total": 7,
+      "text_sig_pct": 85.7
+    },
+    "empathetic_responsiveness": {
+      "activation_r": 0.732,
+      "mean_text_abs_r": 0.107,
+      "gap_ratio": 6.84,
+      "text_features_significant": 5,
+      "text_features_total": 7,
+      "text_sig_pct": 71.4
+    },
+    "non_judgmental_acceptance": {
+      "activation_r": 0.589,
+      "mean_text_abs_r": 0.049,
+      "gap_ratio": 12.03,
+      "text_features_significant": 2,
+      "text_features_total": 7,
+      "text_sig_pct": 28.6
+    },
+    "sycophancy_harmful_validation": {
+      "activation_r": 0.258,
+      "mean_text_abs_r": 0.0452,
+      "gap_ratio": 5.71,
+      "text_features_significant": 1,
+      "text_features_total": 7,
+      "text_sig_pct": 14.3
+    },
+    "uncritical_validation": {
+      "activation_r": 0.324,
+      "mean_text_abs_r": 0.1045,
+      "gap_ratio": 3.1,
+      "text_features_significant": 5,
+      "text_features_total": 7,
+      "text_sig_pct": 71.4
+    },
+    "_summary": {
+      "mean_activation_r": 0.4305,
+      "mean_text_abs_r": 0.0783,
+      "overall_gap_ratio": 5.5,
+      "mean_text_sig_pct": 51.8,
+      "paper_statement": "At N=100/cell, 52% of text features reached significance (up from 18% at N=30), but the sensitivity gap persisted (activation mean r=0.430 vs text mean |r|=0.078, 5.5\u00d7 gap)."
+    }
+  },
+  "significance_summary": {
+    "total_tests": 40,
+    "significant_tests": 23,
+    "significance_rate_pct": 57.5
+  }
+}
